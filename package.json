@@ -22,6 +22,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "cdk": "cdk",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -44,5 +45,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@aws-cdk/aws-amplify-alpha": "^2.37.1-alpha.0",
+    "aws-cdk": "^2.37.1",
+    "aws-cdk-lib": "^2.37.1",
+    "constructs": "^10.1.77",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.9.1"
   }
 }
