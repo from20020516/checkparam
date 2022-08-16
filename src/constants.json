@@ -1,0 +1,528 @@
+{
+    "jobs": [
+        {
+            "id": 0,
+            "en": "None",
+            "ja": "なし",
+            "ens": "NON",
+            "jas": ""
+        },
+        {
+            "id": 1,
+            "en": "Warrior",
+            "ja": "戦士",
+            "ens": "WAR",
+            "jas": "戦"
+        },
+        {
+            "id": 2,
+            "en": "Monk",
+            "ja": "モンク",
+            "ens": "MNK",
+            "jas": "モ"
+        },
+        {
+            "id": 3,
+            "en": "White Mage",
+            "ja": "白魔道士",
+            "ens": "WHM",
+            "jas": "白"
+        },
+        {
+            "id": 4,
+            "en": "Black Mage",
+            "ja": "黒魔道士",
+            "ens": "BLM",
+            "jas": "黒"
+        },
+        {
+            "id": 5,
+            "en": "Red Mage",
+            "ja": "赤魔道士",
+            "ens": "RDM",
+            "jas": "赤"
+        },
+        {
+            "id": 6,
+            "en": "Thief",
+            "ja": "シーフ",
+            "ens": "THF",
+            "jas": "シ"
+        },
+        {
+            "id": 7,
+            "en": "Paladin",
+            "ja": "ナイト",
+            "ens": "PLD",
+            "jas": "ナ"
+        },
+        {
+            "id": 8,
+            "en": "Dark Knight",
+            "ja": "暗黒騎士",
+            "ens": "DRK",
+            "jas": "暗"
+        },
+        {
+            "id": 9,
+            "en": "Beastmaster",
+            "ja": "獣使い",
+            "ens": "BST",
+            "jas": "獣"
+        },
+        {
+            "id": 10,
+            "en": "Bard",
+            "ja": "吟遊詩人",
+            "ens": "BRD",
+            "jas": "詩"
+        },
+        {
+            "id": 11,
+            "en": "Ranger",
+            "ja": "狩人",
+            "ens": "RNG",
+            "jas": "狩"
+        },
+        {
+            "id": 12,
+            "en": "Samurai",
+            "ja": "侍",
+            "ens": "SAM",
+            "jas": "侍"
+        },
+        {
+            "id": 13,
+            "en": "Ninja",
+            "ja": "忍者",
+            "ens": "NIN",
+            "jas": "忍"
+        },
+        {
+            "id": 14,
+            "en": "Dragoon",
+            "ja": "竜騎士",
+            "ens": "DRG",
+            "jas": "竜"
+        },
+        {
+            "id": 15,
+            "en": "Summoner",
+            "ja": "召喚士",
+            "ens": "SMN",
+            "jas": "召"
+        },
+        {
+            "id": 16,
+            "en": "Blue Mage",
+            "ja": "青魔道士",
+            "ens": "BLU",
+            "jas": "青"
+        },
+        {
+            "id": 17,
+            "en": "Corsair",
+            "ja": "コルセア",
+            "ens": "COR",
+            "jas": "コ"
+        },
+        {
+            "id": 18,
+            "en": "Puppetmaster",
+            "ja": "からくり士",
+            "ens": "PUP",
+            "jas": "か"
+        },
+        {
+            "id": 19,
+            "en": "Dancer",
+            "ja": "踊り子",
+            "ens": "DNC",
+            "jas": "踊"
+        },
+        {
+            "id": 20,
+            "en": "Scholar",
+            "ja": "学者",
+            "ens": "SCH",
+            "jas": "学"
+        },
+        {
+            "id": 21,
+            "en": "Geomancer",
+            "ja": "風水士",
+            "ens": "GEO",
+            "jas": "風"
+        },
+        {
+            "id": 22,
+            "en": "Rune Fencer",
+            "ja": "魔導剣士",
+            "ens": "RUN",
+            "jas": "剣"
+        },
+        {
+            "id": 23,
+            "en": "Monipulator",
+            "ja": "モンストロス",
+            "ens": "MON",
+            "jas": "MON"
+        }
+    ],
+    "skills": [
+        {
+            "id": 0,
+            "en": "(N/A)",
+            "ja": "(N/A)",
+            "category": "None"
+        },
+        {
+            "id": 1,
+            "en": "Hand-to-Hand",
+            "ja": "格闘",
+            "category": "Combat"
+        },
+        {
+            "id": 2,
+            "en": "Dagger",
+            "ja": "短剣",
+            "category": "Combat"
+        },
+        {
+            "id": 3,
+            "en": "Sword",
+            "ja": "片手剣",
+            "category": "Combat"
+        },
+        {
+            "id": 4,
+            "en": "Great Sword",
+            "ja": "両手剣",
+            "category": "Combat"
+        },
+        {
+            "id": 5,
+            "en": "Axe",
+            "ja": "片手斧",
+            "category": "Combat"
+        },
+        {
+            "id": 6,
+            "en": "Great Axe",
+            "ja": "両手斧",
+            "category": "Combat"
+        },
+        {
+            "id": 7,
+            "en": "Scythe",
+            "ja": "両手鎌",
+            "category": "Combat"
+        },
+        {
+            "id": 8,
+            "en": "Polearm",
+            "ja": "両手槍",
+            "category": "Combat"
+        },
+        {
+            "id": 9,
+            "en": "Katana",
+            "ja": "片手刀",
+            "category": "Combat"
+        },
+        {
+            "id": 10,
+            "en": "Great Katana",
+            "ja": "両手刀",
+            "category": "Combat"
+        },
+        {
+            "id": 11,
+            "en": "Club",
+            "ja": "片手棍",
+            "category": "Combat"
+        },
+        {
+            "id": 12,
+            "en": "Staff",
+            "ja": "両手棍",
+            "category": "Combat"
+        },
+        {
+            "id": 22,
+            "en": "Automaton Melee",
+            "ja": "白兵戦",
+            "category": "Puppet"
+        },
+        {
+            "id": 23,
+            "en": "Automaton Archery",
+            "ja": "射撃戦",
+            "category": "Puppet"
+        },
+        {
+            "id": 24,
+            "en": "Automaton Magic",
+            "ja": "魔法戦",
+            "category": "Puppet"
+        },
+        {
+            "id": 25,
+            "en": "Archery",
+            "ja": "弓術",
+            "category": "Combat"
+        },
+        {
+            "id": 26,
+            "en": "Marksmanship",
+            "ja": "射撃",
+            "category": "Combat"
+        },
+        {
+            "id": 27,
+            "en": "Throwing",
+            "ja": "投てき",
+            "category": "Combat"
+        },
+        {
+            "id": 28,
+            "en": "Guard",
+            "ja": "ガード",
+            "category": "Combat"
+        },
+        {
+            "id": 29,
+            "en": "Evasion",
+            "ja": "回避",
+            "category": "Combat"
+        },
+        {
+            "id": 30,
+            "en": "Shield",
+            "ja": "盾",
+            "category": "Combat"
+        },
+        {
+            "id": 31,
+            "en": "Parrying",
+            "ja": "受け流し",
+            "category": "Combat"
+        },
+        {
+            "id": 32,
+            "en": "Divine Magic",
+            "ja": "神聖魔法",
+            "category": "Magic"
+        },
+        {
+            "id": 33,
+            "en": "Healing Magic",
+            "ja": "回復魔法",
+            "category": "Magic"
+        },
+        {
+            "id": 34,
+            "en": "Enhancing Magic",
+            "ja": "強化魔法",
+            "category": "Magic"
+        },
+        {
+            "id": 35,
+            "en": "Enfeebling Magic",
+            "ja": "弱体魔法",
+            "category": "Magic"
+        },
+        {
+            "id": 36,
+            "en": "Elemental Magic",
+            "ja": "精霊魔法",
+            "category": "Magic"
+        },
+        {
+            "id": 37,
+            "en": "Dark Magic",
+            "ja": "暗黒魔法",
+            "category": "Magic"
+        },
+        {
+            "id": 38,
+            "en": "Summoning Magic",
+            "ja": "召喚魔法",
+            "category": "Magic"
+        },
+        {
+            "id": 39,
+            "en": "Ninjutsu",
+            "ja": "忍術",
+            "category": "Magic"
+        },
+        {
+            "id": 40,
+            "en": "Singing",
+            "ja": "歌唱",
+            "category": "Magic"
+        },
+        {
+            "id": 41,
+            "en": "Stringed Instrument",
+            "ja": "弦楽器",
+            "category": "Magic"
+        },
+        {
+            "id": 42,
+            "en": "Wind Instrument",
+            "ja": "管楽器",
+            "category": "Magic"
+        },
+        {
+            "id": 43,
+            "en": "Blue Magic",
+            "ja": "青魔法",
+            "category": "Magic"
+        },
+        {
+            "id": 44,
+            "en": "Geomancy",
+            "ja": "風水魔法",
+            "category": "Magic"
+        },
+        {
+            "id": 45,
+            "en": "Handbell",
+            "ja": "風水鈴",
+            "category": "Magic"
+        },
+        {
+            "id": 48,
+            "en": "Fishing",
+            "ja": "釣り",
+            "category": "Synthesis"
+        },
+        {
+            "id": 49,
+            "en": "Woodworking",
+            "ja": "木工",
+            "category": "Synthesis"
+        },
+        {
+            "id": 50,
+            "en": "Smithing",
+            "ja": "鍛冶",
+            "category": "Synthesis"
+        },
+        {
+            "id": 51,
+            "en": "Goldsmithing",
+            "ja": "彫金",
+            "category": "Synthesis"
+        },
+        {
+            "id": 52,
+            "en": "Clothcraft",
+            "ja": "裁縫",
+            "category": "Synthesis"
+        },
+        {
+            "id": 53,
+            "en": "Leathercraft",
+            "ja": "革細工",
+            "category": "Synthesis"
+        },
+        {
+            "id": 54,
+            "en": "Bonecraft",
+            "ja": "骨細工",
+            "category": "Synthesis"
+        },
+        {
+            "id": 55,
+            "en": "Alchemy",
+            "ja": "錬金術",
+            "category": "Synthesis"
+        },
+        {
+            "id": 56,
+            "en": "Cooking",
+            "ja": "調理",
+            "category": "Synthesis"
+        },
+        {
+            "id": 57,
+            "en": "Synergy",
+            "ja": "錬成",
+            "category": "Synthesis"
+        }
+    ],
+    "slots": [
+        {
+            "id": 0,
+            "en": "Main",
+            "ja": "メイン"
+        },
+        {
+            "id": 1,
+            "en": "Sub",
+            "ja": "サブ"
+        },
+        {
+            "id": 2,
+            "en": "Range",
+            "ja": "レンジ"
+        },
+        {
+            "id": 3,
+            "en": "Ammo",
+            "ja": "矢弾"
+        },
+        {
+            "id": 4,
+            "en": "Head",
+            "ja": "頭"
+        },
+        {
+            "id": 5,
+            "en": "Body",
+            "ja": "胴"
+        },
+        {
+            "id": 6,
+            "en": "Hands",
+            "ja": "両手"
+        },
+        {
+            "id": 7,
+            "en": "Legs",
+            "ja": "両脚"
+        },
+        {
+            "id": 8,
+            "en": "Feet",
+            "ja": "両足"
+        },
+        {
+            "id": 9,
+            "en": "Neck",
+            "ja": "首"
+        },
+        {
+            "id": 10,
+            "en": "Waist",
+            "ja": "腰"
+        },
+        {
+            "id": 11,
+            "en": "Left Ear",
+            "ja": "耳"
+        },
+        {
+            "id": 13,
+            "en": "Left Ring",
+            "ja": "指"
+        },
+        {
+            "id": 15,
+            "en": "Back",
+            "ja": "背"
+        }
+    ]
+}
