@@ -1,5 +1,5 @@
-import { Item } from "../utils";
-import { Condition, Query, initial } from "./query";
+import { Item } from '../utils';
+import { Condition, Query, initial } from './query';
 
 export type Action = (cond: Condition) => Condition;
 

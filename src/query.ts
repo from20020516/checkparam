@@ -1,4 +1,4 @@
-import { Item } from "../utils";
+import { Item } from '../utils';
 
 export type Condition = {
   job_flags: number;
@@ -18,7 +18,7 @@ export function initial(): Condition {
     slot_flags: 0,
     skill: 0,
     minLevel: 0,
-    text: ""
+    text: ''
   };
 }
 
