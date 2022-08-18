@@ -74,7 +74,7 @@ export interface Item {
   type: string;
 }
 
-const AllJobs = 8388606;
+const AllJobs = parseInt('11111111111111111111110', 2);
 
 /**
  * 2進数表記ジョブを文字列表記に変換する
