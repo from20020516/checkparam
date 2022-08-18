@@ -16,13 +16,13 @@ const columns: TableColumn<Item>[] = [
     name: 'アイテム',
     selector: row => row.name,
     sortable: true,
-    width: '14em'
+    width: '14em',
   },
   {
     name: '種別',
     selector: row => row.type,
     sortable: true,
-    width: '14em'
+    width: '14em',
   },
   {
     name: '説明',
@@ -30,26 +30,26 @@ const columns: TableColumn<Item>[] = [
     sortable: true,
     width: '28em',
     format: row =>
-      row.description.split('\n').map(line => <div key={line}>{line}</div>)
+      row.description.split('\n').map(line => <div key={line}>{line}</div>),
   },
   {
     name: 'ジョブ',
     selector: row => row.jobs,
     sortable: true,
-    width: '28em'
+    width: '28em',
   },
   {
     name: 'Lv',
     selector: row => row.level,
     sortable: true,
-    width: '10em'
+    width: '10em',
   },
   {
     name: 'IL',
     selector: row => row.item_level,
     sortable: true,
-    width: '10em'
-  }
+    width: '10em',
+  },
 ];
 
 const App = () => {
@@ -66,7 +66,7 @@ const App = () => {
         style={{
           paddingLeft: 15,
           paddingRight: 15,
-          textAlign: 'center'
+          textAlign: 'center',
         }}
       >
         <div>
@@ -87,7 +87,7 @@ const App = () => {
                 onClick={() => dispatchCondition(filter.SetJob(job.id))}
                 style={{
                   background: cond.job_flags & (1 << job.id) && 'grey',
-                  border: 0
+                  border: 0,
                 }}
               >
                 {job.jas}
@@ -110,7 +110,7 @@ const App = () => {
                 onClick={() => dispatchCondition(filter.SetSkill(skill.id))}
                 style={{
                   background: cond.skill & (1 << skill.id) ? 'grey' : 0,
-                  border: 0
+                  border: 0,
                 }}
               >
                 {skill.ja}
@@ -124,7 +124,7 @@ const App = () => {
               onClick={() => dispatchCondition(filter.SetSlot(slot.id))}
               style={{
                 background: cond.slot_flags & (1 << slot.id) && 'grey',
-                border: 0
+                border: 0,
               }}
             >
               {slot.ja}
@@ -138,7 +138,7 @@ const App = () => {
             }
             style={{
               background: cond.minLevel === 119 ? 'grey' : 0,
-              border: 0
+              border: 0,
             }}
           >
             IL119

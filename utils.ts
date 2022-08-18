@@ -36,7 +36,7 @@ export enum AmmoType {
   Bait = 'Bait',
   Bolt = 'Bolt',
   Bullet = 'Bullet',
-  Shell = 'Shell'
+  Shell = 'Shell',
 }
 export enum Category {
   Armor = 'Armor',
@@ -45,21 +45,21 @@ export enum Category {
   Gil = 'Gil',
   Maze = 'Maze',
   Usable = 'Usable',
-  Weapon = 'Weapon'
+  Weapon = 'Weapon',
 }
 export enum SkillCategory {
   Combat = 'Combat',
   Magic = 'Magic',
   None = 'None',
   Puppet = 'Puppet',
-  Synthesis = 'Synthesis'
+  Synthesis = 'Synthesis',
 }
 export enum RangeType {
   Bow = 'Bow',
   Cannon = 'Cannon',
   Crossbow = 'Crossbow',
   FishingRod = 'Fishing Rod',
-  Gun = 'Gun'
+  Gun = 'Gun',
 }
 export interface Item {
   id: number;
@@ -114,12 +114,12 @@ const convertRawItem = (item: RawItem) => {
         _jobs: item.jobs,
         _slots: item.slots,
         skill: 0,
-        type: ''
+        type: '',
       };
       const slot = [
         ...Number(item.slots)
           .toString(2)
-          .padStart(16, '0')
+          .padStart(16, '0'),
       ]
         .reverse()
         .join('')
@@ -202,10 +202,10 @@ const convertRawItem = (item: RawItem) => {
               '耳',
               '指',
               '指',
-              '背'
-            ][index]
+              '背',
+            ][index],
           }))
-          .filter(slot => !['Right Ear', 'Right Ring'].includes(slot.en))
+          .filter(slot => !['Right Ear', 'Right Ring'].includes(slot.en)),
       };
       writeFileSync(
         join(__dirname, './src/constants.json'),
