@@ -29,8 +29,7 @@ const columns: TableColumn<Item>[] = [
     selector: row => row.description,
     sortable: true,
     width: '28em',
-    format: row =>
-      row.description.split('\n').map(line => <div key={line}>{line}</div>),
+    format: row => row.description.split('\n').map(line => <div key={line}>{line}</div>),
   },
   {
     name: 'ジョブ',
@@ -99,11 +98,7 @@ const App = () => {
         </div>
         <div>
           {constants.skills
-            .filter(
-              skill =>
-                skill.category === 'Combat' &&
-                !['回避', '受け流し', 'ガード'].includes(skill.ja)
-            )
+            .filter(skill => skill.category === 'Combat' && !['回避', '受け流し', 'ガード'].includes(skill.ja))
             .map(skill => (
               <button
                 key={skill.ja}
@@ -131,11 +126,7 @@ const App = () => {
             </button>
           ))}
           <button
-            onClick={() =>
-              dispatchCondition(
-                filter.SetMinLevel(cond.minLevel === 119 ? 0 : 119)
-              )
-            }
+            onClick={() => dispatchCondition(filter.SetMinLevel(cond.minLevel === 119 ? 0 : 119))}
             style={{
               background: cond.minLevel === 119 ? 'grey' : 0,
               border: 0,
@@ -144,19 +135,12 @@ const App = () => {
             IL119
           </button>
           <button
-            onClick={() =>
-              dispatchCondition(
-                filter.SetMinLevel(cond.minLevel === 99 ? 0 : 99)
-              )
-            }
+            onClick={() => dispatchCondition(filter.SetMinLevel(cond.minLevel === 99 ? 0 : 99))}
             style={{ background: cond.minLevel === 99 ? 'grey' : 0, border: 0 }}
           >
             Lv99
           </button>
-          <button
-            onClick={() => dispatchCondition(filter.Reset)}
-            style={{ background: 0, border: 0 }}
-          >
+          <button onClick={() => dispatchCondition(filter.Reset)} style={{ background: 0, border: 0 }}>
             リセット
           </button>
         </div>
