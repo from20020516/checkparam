@@ -117,7 +117,7 @@ function skillFilter(skill: Set<number>): Filter<number> {
 
 function minLevelFilter(level: number): Filter<number> {
   return new Filter(
-    item => item.item_level ?? item.level,
+    item => (item.item_level > 0 ? item.item_level : item.level),
     that => that >= level
   );
 }
