@@ -13,7 +13,7 @@ export function Extra(name: string): TableColumn<Item> {
 }
 
 export const PropName = (word: string): string => {
-  const x = word.match(/(.*)[><=]+[-+]?\d+$/);
+  const x = word.match(/(.+)[><=]+[-+]?\d+$/);
   return x ? x[1] : word;
 };
 

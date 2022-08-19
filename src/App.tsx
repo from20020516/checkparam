@@ -18,12 +18,8 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
     name: 'アイテム',
     selector: row => row.name,
     cell: row => (
-      <a
-        href={`http://wiki.ffo.jp/search.cgi?CCC=%E6%84%9B&Command=Search&qf=${encodeURIComponent(
-          row.name
-        )}&order=match&ffotype=title&type=title`}
-      >
-        <Highlighter searchWords={words} textToHighlight={row.name} />
+      <a href={searchLink(row.name)}>
+        <Highlighter searchWords={words} textToHighlight={row.name} autoEscape={true} />
       </a>
     ),
     sortable: true,
@@ -32,7 +28,7 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
   {
     name: '説明',
     selector: row => row.description,
-    cell: row => <Highlighter searchWords={words} textToHighlight={row.description} />,
+    cell: row => <Highlighter searchWords={words} textToHighlight={row.description} autoEscape={true} />,
     sortable: true,
     width: '28em',
     format: row => row.description.split('\n').map(line => <div key={line}>{line}</div>),
@@ -177,6 +173,11 @@ const App = () => {
       />
     </div>
   );
+};
+
+const searchLink = (s: string): string => {
+  const x = encodeURIComponent(s);
+  return `http://wiki.ffo.jp/search.cgi?CCC=%E6%84%9B&Command=Search&qf=${x}&order=match&ffotype=title&type=title`;
 };
 
 export default App;
