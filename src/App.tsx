@@ -90,7 +90,7 @@ const App = () => {
               key={job.jas}
               onClick={() => dispatchCondition(SetJob(job.id))}
               style={{
-                background: cond.job_flags & (1 << job.id) && 'grey',
+                background: cond.job_flags & (1 << job.id) && 'mistyrose',
                 border: 0,
               }}
             >
@@ -105,7 +105,7 @@ const App = () => {
               key={skill.ja}
               onClick={() => dispatchCondition(SetSkill(skill.id))}
               style={{
-                background: cond.skill.has(skill.id) ? 'grey' : 0,
+                background: cond.skill.has(skill.id) ? 'mistyrose' : 0,
                 border: 0,
               }}
             >
@@ -120,7 +120,7 @@ const App = () => {
               key={slot.ja}
               onClick={() => dispatchCondition(SetSlot(slot.id))}
               style={{
-                background: cond.slot_flags & (1 << slot.id) && 'grey',
+                background: cond.slot_flags & (1 << slot.id) && 'mistyrose',
                 border: 0,
               }}
             >
@@ -130,7 +130,7 @@ const App = () => {
           <button
             onClick={() => dispatchCondition(SetMinLevel(cond.minLevel === 119 ? 0 : 119))}
             style={{
-              background: cond.minLevel === 119 ? 'grey' : 0,
+              background: cond.minLevel === 119 ? 'mistyrose' : 0,
               border: 0,
             }}
           >
@@ -138,7 +138,7 @@ const App = () => {
           </button>
           <button
             onClick={() => dispatchCondition(SetMinLevel(cond.minLevel === 99 ? 0 : 99))}
-            style={{ background: cond.minLevel === 99 ? 'grey' : 0, border: 0 }}
+            style={{ background: cond.minLevel === 99 ? 'mistyrose' : 0, border: 0 }}
           >
             Lv99
           </button>
