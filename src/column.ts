@@ -12,7 +12,21 @@ export function Extra(name: string): TableColumn<Item> {
   };
 }
 
-export const PropName = (word: string): string => word.replace(/[><=]+[-+]?\d+$/, '');
+export const PropName = (word: string): string => {
+  const x = word.match(/(.*)[><=]+[-+]?\d+$/);
+  return x ? x[1] : word;
+};
+
+export const PropNames = (words: string[]): string[] => {
+  const ret = [];
+  for (const word of words) {
+    const prop = PropName(word);
+    if (prop !== word) {
+      ret.push(prop);
+    }
+  }
+  return ret;
+};
 
 type Comparator<T> = (a: T, b: T) => number;
 

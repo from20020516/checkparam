@@ -72,10 +72,8 @@ const App = () => {
     setItems(filter.Apply(cond, data));
   }, [cond]);
 
-  const props = cond.text
-    .split(/\s/)
-    .map(column.PropName)
-    .filter(t => t !== '');
+  const words = cond.text.split(/\s/).filter(t => t !== '');
+  const props = column.PropNames(words);
   const extra = props.map(column.Extra);
   const sorted = items.sort(column.Sorter(props));
 
@@ -169,7 +167,7 @@ const App = () => {
         </div>
       </div>
       <DataTable
-        columns={columns(extra, props)}
+        columns={columns(extra, words.map(column.PropName))}
         data={sorted}
         fixedHeader={true}
         pagination={true}
