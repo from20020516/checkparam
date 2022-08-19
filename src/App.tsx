@@ -65,7 +65,6 @@ const App = () => {
   const [cond, dispatchCondition] = useReducer(Reducer, Initial());
 
   useEffect(() => {
-    console.log(data[0]);
     setItems(filter.Apply(cond, data));
   }, [cond]);
 
@@ -73,6 +72,8 @@ const App = () => {
   const props = column.PropNames(words);
   const extra = props.map(column.Extra);
   const sorted = items.sort(column.Sorter(props));
+
+  console.log(sorted[0]);
 
   return (
     <div>
