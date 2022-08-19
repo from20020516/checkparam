@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useReducer } from 'react';
 import { Item, SkillCategory } from '../utils';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
@@ -61,19 +61,12 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
 ];
 
 const App = () => {
-  const [items, setItems] = useState<Item[]>(data);
   const [cond, dispatchCondition] = useReducer(Reducer, Initial());
-
-  useEffect(() => {
-    setItems(filter.Apply(cond, data));
-  }, [cond]);
 
   const words = cond.text.split(/\s/).filter(t => t !== '');
   const props = column.PropNames(words);
   const extra = props.map(column.Extra);
-  const sorted = items.sort(column.Sorter(props));
-
-  console.log(sorted[0]);
+  const items = filter.Apply(cond, data).sort(column.Sorter(props));
 
   return (
     <div>
@@ -166,7 +159,7 @@ const App = () => {
       </div>
       <DataTable
         columns={columns(extra, words.map(column.PropName))}
-        data={sorted}
+        data={items}
         fixedHeader={true}
         pagination={true}
         paginationPerPage={30}

@@ -38,7 +38,6 @@ const toggle = <T>(xs: Set<T>, x: T): Set<T> => {
 
 export function SetSkill(skill: number): Action {
   return (cond: Condition): Condition => {
-    console.log('SetSkill', skill);
     return {
       ...cond,
       skill: toggle(cond.skill, skill),

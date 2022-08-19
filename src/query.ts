@@ -21,7 +21,7 @@ class FilterSet implements FilterInterface {
     if (cond.slot_flags) {
       this.fs.push(slotFilter(cond.slot_flags));
     }
-    if (cond.skill) {
+    if (cond.skill.size > 0) {
       this.fs.push(skillFilter(cond.skill));
     }
     if (cond.minLevel) {
