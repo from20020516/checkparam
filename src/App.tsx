@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from 'react';
 import { Item, SkillCategory } from '../utils';
 import DataTable, { TableColumn } from 'react-data-table-component';
+import Highlighter from 'react-highlight-words';
 import { Reducer, SetText, SetJob, SetSlot, SetSkill, SetMinLevel, Reset, Initial } from './condition';
 import * as filter from './query';
 import * as column from './column';
@@ -12,16 +13,26 @@ const constants: {
 } = require('./constants.json');
 const data: Item[] = require('./items.json');
 
-const columns = (extra: TableColumn<Item>[]): TableColumn<Item>[] => [
+const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>[] => [
   {
     name: 'アイテム',
     selector: row => row.name,
+    cell: row => (
+      <a
+        href={`http://wiki.ffo.jp/search.cgi?CCC=%E6%84%9B&Command=Search&qf=${encodeURIComponent(
+          row.name
+        )}&order=match&ffotype=title&type=title`}
+      >
+        <Highlighter searchWords={words} textToHighlight={row.name} />
+      </a>
+    ),
     sortable: true,
     width: '14em',
   },
   {
     name: '説明',
     selector: row => row.description,
+    cell: row => <Highlighter searchWords={words} textToHighlight={row.description} />,
     sortable: true,
     width: '28em',
     format: row => row.description.split('\n').map(line => <div key={line}>{line}</div>),
@@ -74,7 +85,7 @@ const App = () => {
         style={{
           paddingLeft: 15,
           paddingRight: 15,
-          textAlign: 'center',
+          textAlign: 'left',
         }}
       >
         <div>
@@ -88,7 +99,8 @@ const App = () => {
           />
         </div>
         <div>
-          {constants.jobs.slice(0, -1).map(job =>
+          ジョブ：
+          {constants.jobs.slice(1, -1).map(job =>
             job.id ? (
               <button
                 key={job.jas}
@@ -106,6 +118,7 @@ const App = () => {
           )}
         </div>
         <div>
+          スキル：
           {constants.skills
             .filter(skill => skill.category === 'Combat' && !['回避', '受け流し', 'ガード'].includes(skill.ja))
             .map(skill => (
@@ -122,6 +135,7 @@ const App = () => {
             ))}
         </div>
         <div>
+          装備枠：
           {constants.slots.map(slot => (
             <button
               key={slot.ja}
@@ -155,7 +169,7 @@ const App = () => {
         </div>
       </div>
       <DataTable
-        columns={columns(extra)}
+        columns={columns(extra, props)}
         data={sorted}
         fixedHeader={true}
         pagination={true}
