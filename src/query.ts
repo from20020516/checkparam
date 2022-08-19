@@ -37,33 +37,33 @@ class FilterSet implements FilterInterface {
 function textFilter(word: string): FilterInterface {
   const gte = word.match(/^(.*)>=([-+]?\d+)$/);
   if (gte) {
-    const ext = propValue(gte[1]);
+    const prop = propValue(gte[1]);
     const threshold = Number(gte[2]);
-    return new Filter(ext, x => x >= threshold);
+    return new Filter(prop, x => x >= threshold);
   }
   const gt = word.match(/^(.*)>([-+]?\d+)$/);
   if (gt) {
-    const ext = propValue(gt[1]);
+    const prop = propValue(gt[1]);
     const threshold = Number(gt[2]);
-    return new Filter(ext, x => x > threshold);
+    return new Filter(prop, x => x > threshold);
   }
   const lte = word.match(/^(.*)<=([-+]?\d+)$/);
   if (lte) {
-    const ext = propValue(lte[1]);
+    const prop = propValue(lte[1]);
     const threshold = Number(lte[2]);
-    return new Filter(ext, x => x <= threshold);
+    return new Filter(prop, x => x <= threshold);
   }
   const lt = word.match(/^(.*)<([-+]?\d+)$/);
   if (lt) {
-    const ext = propValue(lt[1]);
+    const prop = propValue(lt[1]);
     const threshold = Number(lt[2]);
-    return new Filter(ext, x => x < threshold);
+    return new Filter(prop, x => x < threshold);
   }
   const eq = word.match(/^(.*)=([-+]?\d+)$/);
   if (eq) {
-    const ext = propValue(eq[1]);
+    const prop = propValue(eq[1]);
     const value = Number(eq[2]);
-    return new Filter(ext, x => x === value);
+    return new Filter(prop, x => x === value);
   }
   return new Filter(wholeText, x => x.includes(word));
 }
