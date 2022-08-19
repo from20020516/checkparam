@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useState } from 'react';
 import { Item, SkillCategory } from '../utils';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import * as filter from './filter';
+import * as filter from './query';
 import { Reducer, SetText, SetJob, SetSlot, SetSkill, SetMinLevel, Reset, Initial } from './condition';
 
 const constants: {
