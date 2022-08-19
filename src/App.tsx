@@ -1,8 +1,9 @@
 import { useEffect, useReducer, useState } from 'react';
 import { Item, SkillCategory } from '../utils';
 import DataTable, { TableColumn } from 'react-data-table-component';
-import * as filter from './query';
 import { Reducer, SetText, SetJob, SetSlot, SetSkill, SetMinLevel, Reset, Initial } from './condition';
+import * as filter from './query';
+import * as column from './column';
 
 const constants: {
   jobs: { id: number; en: string; ja: string; ens: string; jas: string }[];
@@ -11,16 +12,10 @@ const constants: {
 } = require('./constants.json');
 const data: Item[] = require('./items.json');
 
-const columns: TableColumn<Item>[] = [
+const columns = (extra: TableColumn<Item>[]): TableColumn<Item>[] => [
   {
     name: 'アイテム',
     selector: row => row.name,
-    sortable: true,
-    width: '14em',
-  },
-  {
-    name: '種別',
-    selector: row => row.type,
     sortable: true,
     width: '14em',
   },
@@ -30,6 +25,13 @@ const columns: TableColumn<Item>[] = [
     sortable: true,
     width: '28em',
     format: row => row.description.split('\n').map(line => <div key={line}>{line}</div>),
+  },
+  ...extra,
+  {
+    name: '種別',
+    selector: row => row.type,
+    sortable: true,
+    width: '14em',
   },
   {
     name: 'ジョブ',
@@ -58,6 +60,13 @@ const App = () => {
   useEffect(() => {
     setItems(filter.Apply(cond, data));
   }, [cond]);
+
+  const props = cond.text
+    .split(/\s/)
+    .map(column.PropName)
+    .filter(t => t !== '');
+  const extra = props.map(column.Extra);
+  const sorted = items.sort(column.Sorter(props));
 
   return (
     <div>
@@ -146,8 +155,8 @@ const App = () => {
         </div>
       </div>
       <DataTable
-        columns={columns}
-        data={items}
+        columns={columns(extra)}
+        data={sorted}
         fixedHeader={true}
         pagination={true}
         paginationPerPage={30}
