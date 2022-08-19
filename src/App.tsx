@@ -119,6 +119,7 @@ const App = () => {
             .map(skill => (
               <button
                 key={skill.ja}
+                onClick={() => dispatchCondition(SetSkill(skill.id))}
                 style={{
                   background: cond.skill.has(skill.id) ? 'grey' : 0,
                   border: 0,
