@@ -31,17 +31,18 @@ export function SetSlot(bits: number): Action {
 }
 
 const toggle = <T>(xs: Set<T>, x: T): Set<T> => {
-  console.log('before', xs, x);
-  xs.has(x) ? xs.delete(x) : xs.add(x);
-  console.log('after', xs, x);
-  return xs;
+  const ret = new Set(xs);
+  ret.has(x) ? ret.delete(x) : ret.add(x);
+  return ret;
 };
 
 export function SetSkill(skill: number): Action {
   return (cond: Condition): Condition => {
     console.log('SetSkill', skill);
-    toggle(cond.skill, skill);
-    return cond;
+    return {
+      ...cond,
+      skill: toggle(cond.skill, skill),
+    };
   };
 }
 
