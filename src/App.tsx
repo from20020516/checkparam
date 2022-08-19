@@ -1,16 +1,12 @@
 import { useReducer } from 'react';
-import { Item, SkillCategory } from '../utils';
+import { Item } from '../utils';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
 import { Reducer, SetText, SetJob, SetSlot, SetSkill, SetMinLevel, Reset, Initial } from './condition';
+import { jobs, slots, skills } from './constants';
 import * as filter from './query';
 import * as column from './column';
 
-const constants: {
-  jobs: { id: number; en: string; ja: string; ens: string; jas: string }[];
-  slots: { id: number; en: string; ja: string }[];
-  skills: { id: number; en: string; ja: string; category: SkillCategory }[];
-} = require('./constants.json');
 const data: Item[] = require('./items.json');
 
 const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>[] => [
@@ -89,43 +85,37 @@ const App = () => {
         </div>
         <div>
           ジョブ：
-          {constants.jobs.slice(1, -1).map(job =>
-            job.id ? (
-              <button
-                key={job.jas}
-                onClick={() => dispatchCondition(SetJob(job.id))}
-                style={{
-                  background: cond.job_flags & (1 << job.id) && 'grey',
-                  border: 0,
-                }}
-              >
-                {job.jas}
-              </button>
-            ) : (
-              <div key={job.jas}></div>
-            )
-          )}
+          {jobs.map(job => (
+            <button
+              key={job.jas}
+              onClick={() => dispatchCondition(SetJob(job.id))}
+              style={{
+                background: cond.job_flags & (1 << job.id) && 'grey',
+                border: 0,
+              }}
+            >
+              {job.jas}
+            </button>
+          ))}
         </div>
         <div>
           スキル：
-          {constants.skills
-            .filter(skill => skill.category === 'Combat' && !['回避', '受け流し', 'ガード'].includes(skill.ja))
-            .map(skill => (
-              <button
-                key={skill.ja}
-                onClick={() => dispatchCondition(SetSkill(skill.id))}
-                style={{
-                  background: cond.skill.has(skill.id) ? 'grey' : 0,
-                  border: 0,
-                }}
-              >
-                {skill.ja}
-              </button>
-            ))}
+          {skills.map(skill => (
+            <button
+              key={skill.ja}
+              onClick={() => dispatchCondition(SetSkill(skill.id))}
+              style={{
+                background: cond.skill.has(skill.id) ? 'grey' : 0,
+                border: 0,
+              }}
+            >
+              {skill.ja}
+            </button>
+          ))}
         </div>
         <div>
           装備枠：
-          {constants.slots.map(slot => (
+          {slots.map(slot => (
             <button
               key={slot.ja}
               onClick={() => dispatchCondition(SetSlot(slot.id))}
