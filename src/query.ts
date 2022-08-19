@@ -108,10 +108,10 @@ function slotFilter(slot_flags: number): Filter<number> {
   );
 }
 
-function skillFilter(skill: number): Filter<number> {
+function skillFilter(skill: Set<number>): Filter<number> {
   return new Filter(
     item => item.skill,
-    id => ((1 << id) & skill) > 0
+    id => (skill.size > 0 ? skill.has(id) : true)
   );
 }
 

@@ -65,6 +65,7 @@ const App = () => {
   const [cond, dispatchCondition] = useReducer(Reducer, Initial());
 
   useEffect(() => {
+    console.log(data[0]);
     setItems(filter.Apply(cond, data));
   }, [cond]);
 
@@ -118,9 +119,8 @@ const App = () => {
             .map(skill => (
               <button
                 key={skill.ja}
-                onClick={() => dispatchCondition(SetSkill(skill.id))}
                 style={{
-                  background: cond.skill & (1 << skill.id) ? 'grey' : 0,
+                  background: cond.skill.has(skill.id) ? 'grey' : 0,
                   border: 0,
                 }}
               >
