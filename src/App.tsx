@@ -2,7 +2,16 @@ import { useEffect, useReducer, useState } from "react";
 import { Item, SkillCategory } from "../utils";
 import DataTable, { TableColumn } from "react-data-table-component";
 import * as filter from "./filter";
-import * as query from "./query";
+import {
+  Reducer,
+  SetText,
+  SetJob,
+  SetSlot,
+  SetSkill,
+  SetMinLevel,
+  Reset,
+  Initial
+} from "./condition";
 
 const constants: {
   jobs: { id: number; en: string; ja: string; ens: string; jas: string }[];
@@ -54,7 +63,7 @@ const columns: TableColumn<Item>[] = [
 
 const App = () => {
   const [items, setItems] = useState<Item[]>(data);
-  const [cond, dispatchCondition] = useReducer(filter.Reducer, query.initial());
+  const [cond, dispatchCondition] = useReducer(Reducer, Initial());
 
   useEffect(() => {
     setItems(filter.Apply(cond, data));
@@ -75,7 +84,7 @@ const App = () => {
             type="text"
             value={cond.text}
             placeholder="例: ストアTP>10"
-            onChange={e => dispatchCondition(filter.SetText(e.target.value))}
+            onChange={e => dispatchCondition(SetText(e.target.value))}
             style={{ width: "80%", height: 30, margin: "10px", maxWidth: 600 }}
           />
         </div>
@@ -84,7 +93,7 @@ const App = () => {
             job.id ? (
               <button
                 key={job.jas}
-                onClick={() => dispatchCondition(filter.SetJob(job.id))}
+                onClick={() => dispatchCondition(SetJob(job.id))}
                 style={{
                   background: cond.job_flags & (1 << job.id) && "grey",
                   border: 0
@@ -107,7 +116,7 @@ const App = () => {
             .map(skill => (
               <button
                 key={skill.ja}
-                onClick={() => dispatchCondition(filter.SetSkill(skill.id))}
+                onClick={() => dispatchCondition(SetSkill(skill.id))}
                 style={{
                   background: cond.skill & (1 << skill.id) ? "grey" : 0,
                   border: 0
@@ -121,7 +130,7 @@ const App = () => {
           {constants.slots.map(slot => (
             <button
               key={slot.ja}
-              onClick={() => dispatchCondition(filter.SetSlot(slot.id))}
+              onClick={() => dispatchCondition(SetSlot(slot.id))}
               style={{
                 background: cond.slot_flags & (1 << slot.id) && "grey",
                 border: 0
@@ -132,9 +141,7 @@ const App = () => {
           ))}
           <button
             onClick={() =>
-              dispatchCondition(
-                filter.SetMinLevel(cond.minLevel === 119 ? 0 : 119)
-              )
+              dispatchCondition(SetMinLevel(cond.minLevel === 119 ? 0 : 119))
             }
             style={{
               background: cond.minLevel === 119 ? "grey" : 0,
@@ -145,16 +152,14 @@ const App = () => {
           </button>
           <button
             onClick={() =>
-              dispatchCondition(
-                filter.SetMinLevel(cond.minLevel === 99 ? 0 : 99)
-              )
+              dispatchCondition(SetMinLevel(cond.minLevel === 99 ? 0 : 99))
             }
             style={{ background: cond.minLevel === 99 ? "grey" : 0, border: 0 }}
           >
             Lv99
           </button>
           <button
-            onClick={() => dispatchCondition(filter.Reset)}
+            onClick={() => dispatchCondition(Reset)}
             style={{ background: 0, border: 0 }}
           >
             リセット
