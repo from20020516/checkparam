@@ -6,35 +6,35 @@ export function Apply(cond: Condition, item: Item[]): Item[] {
   return item.filter(x => f.accept(x));
 }
 
-interface Predicate {
+interface FilterInterface {
   accept(item: Item): boolean;
 }
 
-class FilterSet implements Predicate {
-  private ps: Predicate[];
+class FilterSet implements FilterInterface {
+  private fs: FilterInterface[];
 
   constructor(cond: Condition) {
-    this.ps = cond.text.split(/\s/).map(x => textFilter(x)) ?? [];
+    this.fs = cond.text.split(/\s/).map(x => textFilter(x)) ?? [];
     if (cond.job_flags) {
-      this.ps.push(jobFilter(cond.job_flags));
+      this.fs.push(jobFilter(cond.job_flags));
     }
     if (cond.slot_flags) {
-      this.ps.push(slotFilter(cond.slot_flags));
+      this.fs.push(slotFilter(cond.slot_flags));
     }
     if (cond.skill) {
-      this.ps.push(skillFilter(cond.skill));
+      this.fs.push(skillFilter(cond.skill));
     }
     if (cond.minLevel) {
-      this.ps.push(minLevelFilter(cond.minLevel));
+      this.fs.push(minLevelFilter(cond.minLevel));
     }
   }
 
   accept(item: Item): boolean {
-    return this.ps.every((p: Predicate) => p.accept(item));
+    return this.fs.every((p: FilterInterface) => p.accept(item));
   }
 }
 
-function textFilter(word: string): Predicate {
+function textFilter(word: string): FilterInterface {
   const gte = word.match(/^(.*)>=([-+]?\d+)$/);
   if (gte) {
     const ext = propValue(gte[1]);
@@ -70,7 +70,7 @@ function textFilter(word: string): Predicate {
 
 type extractor<T> = (item: Item) => T | null;
 
-class Filter<T> implements Predicate {
+class Filter<T> implements FilterInterface {
   extract: extractor<T>;
   f: (x: T) => boolean;
   constructor(ext: extractor<T>, f: (x: T) => boolean) {
