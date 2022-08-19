@@ -1,7 +1,7 @@
-import { parse } from "lua-json";
-import { writeFileSync } from "fs";
-import { join } from "path";
-import { jobs, skills, slots } from "./src/constants.json";
+import { parse } from 'lua-json';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
+import { jobs, skills, slots } from './src/constants.json';
 
 export interface RawItem {
   id: number;
@@ -32,34 +32,34 @@ export interface RawItem {
   superior_level?: number;
 }
 export enum AmmoType {
-  Arrow = "Arrow",
-  Bait = "Bait",
-  Bolt = "Bolt",
-  Bullet = "Bullet",
-  Shell = "Shell"
+  Arrow = 'Arrow',
+  Bait = 'Bait',
+  Bolt = 'Bolt',
+  Bullet = 'Bullet',
+  Shell = 'Shell',
 }
 export enum Category {
-  Armor = "Armor",
-  Automaton = "Automaton",
-  General = "General",
-  Gil = "Gil",
-  Maze = "Maze",
-  Usable = "Usable",
-  Weapon = "Weapon"
+  Armor = 'Armor',
+  Automaton = 'Automaton',
+  General = 'General',
+  Gil = 'Gil',
+  Maze = 'Maze',
+  Usable = 'Usable',
+  Weapon = 'Weapon',
 }
 export enum SkillCategory {
-  Combat = "Combat",
-  Magic = "Magic",
-  None = "None",
-  Puppet = "Puppet",
-  Synthesis = "Synthesis"
+  Combat = 'Combat',
+  Magic = 'Magic',
+  None = 'None',
+  Puppet = 'Puppet',
+  Synthesis = 'Synthesis',
 }
 export enum RangeType {
-  Bow = "Bow",
-  Cannon = "Cannon",
-  Crossbow = "Crossbow",
-  FishingRod = "Fishing Rod",
-  Gun = "Gun"
+  Bow = 'Bow',
+  Cannon = 'Cannon',
+  Crossbow = 'Crossbow',
+  FishingRod = 'Fishing Rod',
+  Gun = 'Gun',
 }
 export interface Item {
   id: number;
@@ -74,7 +74,7 @@ export interface Item {
   type: string;
 }
 
-const AllJobs = 8388606;
+const AllJobs = parseInt('11111111111111111111110', 2);
 
 /**
  * 2進数表記ジョブを文字列表記に変換する
@@ -84,7 +84,7 @@ const AllJobs = 8388606;
 const convertDecimalJobToString = (decimal: number) => {
   const jas = jobs.map(job => job.jas);
   return decimal === AllJobs
-    ? "All Jobs"
+    ? 'All Jobs'
     : [...decimal.toString(2)]
         .reverse()
         .reduce(
@@ -92,7 +92,7 @@ const convertDecimalJobToString = (decimal: number) => {
             Number(binary) ? [...jobstrings, jas[index]] : jobstrings,
           [] as string[]
         )
-        .join("");
+        .join('');
 };
 
 /** アイテムから装備品を抽出し、アプリケーションで使用する形式に変換する */
@@ -101,8 +101,8 @@ const convertRawItem = (item: RawItem) => {
     if (
       item.slots &&
       item.jobs &&
-      item.range_type !== "Fishing Rod" &&
-      item.ammo_type !== "Bait"
+      item.range_type !== 'Fishing Rod' &&
+      item.ammo_type !== 'Bait'
     ) {
       const convertedItem: Item = {
         id: item.id,
@@ -114,35 +114,35 @@ const convertRawItem = (item: RawItem) => {
         _jobs: item.jobs,
         _slots: item.slots,
         skill: 0,
-        type: ""
+        type: '',
       };
       const slot = [
         ...Number(item.slots)
           .toString(2)
-          .padStart(16, "0")
+          .padStart(16, '0'),
       ]
         .reverse()
-        .join("")
-        .indexOf("1");
-      if (item.category === "Armor") {
-        convertedItem.type += "防具：";
+        .join('')
+        .indexOf('1');
+      if (item.category === 'Armor') {
+        convertedItem.type += '防具：';
         if (slot === 1) {
           convertedItem.type += `盾：タイプ${item.shield_size}`;
           convertedItem.skill = 30;
         } else {
           convertedItem.type += slots.find(_ => _.id === slot)!.ja;
         }
-      } else if (item.category === "Weapon") {
-        convertedItem.type += "武器：";
+      } else if (item.category === 'Weapon') {
+        convertedItem.type += '武器：';
         convertedItem.skill = item.skill!;
         if (slot === 3) {
-          convertedItem.type += item.ammo_type ? "矢弾" : "アクセサリ";
+          convertedItem.type += item.ammo_type ? '矢弾' : 'アクセサリ';
         } else if (item.skill) {
           convertedItem.type += skills.find(_ => _.id === item.skill)!.ja;
         } else if (item.slots === 2) {
-          convertedItem.type += "グリップ";
+          convertedItem.type += 'グリップ';
         } else if (item.slots === 4) {
-          convertedItem.type += "ストリンガー";
+          convertedItem.type += 'ストリンガー';
         }
       }
       return convertedItem;
@@ -158,25 +158,25 @@ const convertRawItem = (item: RawItem) => {
 (async ([mode, ...arg]) => {
   switch (mode) {
     /** `src/constants.json`を生成する */
-    case "init":
+    case 'init':
       const [jobs] = parse(
         await (
           await fetch(
-            "https://raw.githubusercontent.com/Windower/Resources/master/resources_data/jobs.lua"
+            'https://raw.githubusercontent.com/Windower/Resources/master/resources_data/jobs.lua'
           )
         ).text()
       ) as [{ id: number; en: string; ja: string; ens: string; jas: string }[]];
       const [skills] = parse(
         await (
           await fetch(
-            "https://raw.githubusercontent.com/Windower/Resources/master/resources_data/skills.lua"
+            'https://raw.githubusercontent.com/Windower/Resources/master/resources_data/skills.lua'
           )
         ).text()
       ) as [{ id: number; en: string; ja: string; category: SkillCategory }[]];
       const [slots] = parse(
         await (
           await fetch(
-            "https://raw.githubusercontent.com/Windower/Resources/master/resources_data/slots.lua"
+            'https://raw.githubusercontent.com/Windower/Resources/master/resources_data/slots.lua'
           )
         ).text()
       ) as [{ id: number; en: string; ja: string }[]];
@@ -187,57 +187,57 @@ const convertRawItem = (item: RawItem) => {
           .map((slot: any, index) => ({
             ...slot,
             ja: [
-              "メイン",
-              "サブ",
-              "レンジ",
-              "矢弾",
-              "頭",
-              "胴",
-              "両手",
-              "両脚",
-              "両足",
-              "首",
-              "腰",
-              "耳",
-              "耳",
-              "指",
-              "指",
-              "背"
-            ][index]
+              'メイン',
+              'サブ',
+              'レンジ',
+              '矢弾',
+              '頭',
+              '胴',
+              '両手',
+              '両脚',
+              '両足',
+              '首',
+              '腰',
+              '耳',
+              '耳',
+              '指',
+              '指',
+              '背',
+            ][index],
           }))
-          .filter(slot => !["Right Ear", "Right Ring"].includes(slot.en))
+          .filter(slot => !['Right Ear', 'Right Ring'].includes(slot.en)),
       };
       writeFileSync(
-        join(__dirname, "./src/constants.json"),
+        join(__dirname, './src/constants.json'),
         JSON.stringify(constants, null, 4)
       );
       break;
     /** `src/items.json`を生成する */
-    case "items":
+    case 'items':
       const [raw_items] = parse(
         await (
           await fetch(
-            "https://raw.githubusercontent.com/Windower/Resources/master/resources_data/items.lua"
+            'https://raw.githubusercontent.com/Windower/Resources/master/resources_data/items.lua'
           )
         ).text()
       ) as { [id: number]: RawItem }[];
       const [item_descriptions] = parse(
         await (
           await fetch(
-            "https://raw.githubusercontent.com/Windower/Resources/master/resources_data/item_descriptions.lua"
+            'https://raw.githubusercontent.com/Windower/Resources/master/resources_data/item_descriptions.lua'
           )
         ).text()
       ) as any[];
       const items = Object.values(raw_items)
-        .filter(item => ["Weapon", "Armor"].includes(item.category))
+        .filter(item => ['Weapon', 'Armor'].includes(item.category))
         .map(item => convertRawItem({ ...item, ...item_descriptions[item.id] }))
         .filter(Boolean);
       writeFileSync(
-        join(__dirname, "./src/items.json"),
+        join(__dirname, './src/items.json'),
         JSON.stringify(items, null, 4)
       );
       break;
     default:
-      throw new Error("UNKNOWN_MODE");
+      throw new Error('UNKNOWN_MODE');
   }
 })(process.argv.slice(2));

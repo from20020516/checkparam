@@ -1,5 +1,5 @@
-import { Item } from "../utils";
-import { Condition } from "./condition";
+import { Item } from '../utils';
+import { Condition } from './condition';
 
 export function Apply(cond: Condition, item: Item[]): Item[] {
   const f = new FilterSet(cond);
@@ -92,8 +92,7 @@ export function propValue(prop: string): extractor<number> {
   };
 }
 
-const wholeText: extractor<string> = (item: Item) =>
-  [item.name, item.description].join();
+const wholeText: extractor<string> = (item: Item) => [item.name, item.description].join();
 
 function jobFilter(job_flags: number): Filter<number> {
   return new Filter(

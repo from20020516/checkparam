@@ -19,29 +19,28 @@ export function SetText(s: string): Action {
 export function SetJob(bits: number): Action {
   return (cond: Condition): Condition => ({
     ...cond,
-    job_flags: cond.job_flags ^ (1 << bits) /** 指定ジョブのbitを反転させる */
+    job_flags: cond.job_flags ^ (1 << bits) /** 指定ジョブのbitを反転させる */,
   });
 }
 
 export function SetSlot(bits: number): Action {
   return (cond: Condition): Condition => ({
     ...cond,
-    slot_flags:
-      cond.slot_flags ^ (1 << bits) /** 指定スロットのbitを反転させる */
+    slot_flags: cond.slot_flags ^ (1 << bits) /** 指定スロットのbitを反転させる */,
   });
 }
 
 export function SetSkill(bits: number): Action {
   return (cond: Condition): Condition => ({
     ...cond,
-    skill: cond.skill ^ (1 << bits)
+    skill: cond.skill ^ (1 << bits),
   });
 }
 
 export function SetMinLevel(level: number): Action {
   return (cond: Condition): Condition => ({
     ...cond,
-    minLevel: level
+    minLevel: level,
   });
 }
 
@@ -53,6 +52,6 @@ export function Initial(): Condition {
     slot_flags: 0,
     skill: 0,
     minLevel: 0,
-    text: ""
+    text: '',
   };
 }
