@@ -65,7 +65,7 @@ function textFilter(word: string): FilterInterface {
     const value = Number(eq[2]);
     return new Filter(prop, x => x === value);
   }
-  return new Filter(wholeText, x => x.includes(word));
+  return new Filter(wholeText, x => x.toLowerCase().includes(word.toLowerCase()));
 }
 
 type extractor<T> = (item: Item) => T | null;
@@ -85,7 +85,7 @@ class Filter<T> implements FilterInterface {
 }
 
 export function propValue(prop: string): extractor<number> {
-  const re = new RegExp(`(^|\\s)${prop}([-+]?\\d+)`);
+  const re = new RegExp(`(^|\\s)${prop}([-+]?\\d+)`, 'i');
   return (item: Item) => {
     const x = item.description.match(re);
     return x ? Number(x[2]) : null;
