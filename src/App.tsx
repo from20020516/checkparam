@@ -3,11 +3,9 @@ import { Item } from '../utils';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
 import { Reducer, SetText, SetJob, SetSlot, SetSkill, SetMinLevel, Reset, Initial } from './condition';
-import { jobs, slots, skills } from './constants';
+import { jobs, slots, skills, items, normalize } from './constants';
 import * as filter from './query';
 import * as column from './column';
-
-const data: Item[] = require('./items.json');
 
 const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>[] => [
   {
@@ -15,7 +13,7 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
     selector: row => row.name,
     cell: row => (
       <a href={searchLink(row.name)}>
-        <Highlighter searchWords={words} textToHighlight={row.name} autoEscape={true} />
+        <Highlighter searchWords={words} textToHighlight={row.name} autoEscape={true} caseSensitive={false} />
       </a>
     ),
     sortable: true,
@@ -24,7 +22,9 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
   {
     name: '説明',
     selector: row => row.description,
-    cell: row => <Highlighter searchWords={words} textToHighlight={row.description} autoEscape={true} />,
+    cell: row => (
+      <Highlighter searchWords={words} textToHighlight={row.description} autoEscape={true} caseSensitive={false} />
+    ),
     sortable: true,
     width: '28em',
     format: row => row.description.split('\n').map(line => <div key={line}>{line}</div>),
@@ -59,10 +59,13 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
 const App = () => {
   const [cond, dispatchCondition] = useReducer(Reducer, Initial());
 
-  const words = cond.text.split(/\s/).filter(t => t !== '');
+  const words = cond.text
+    .split(/\s/)
+    .filter(t => t !== '')
+    .map(normalize);
   const props = column.PropNames(words);
   const extra = props.map(column.Extra);
-  const items = filter.Apply(cond, data).sort(column.Sorter(props));
+  const hoge = filter.Apply(cond, items).sort(column.Sorter(props));
 
   return (
     <div>
@@ -149,7 +152,7 @@ const App = () => {
       </div>
       <DataTable
         columns={columns(extra, words.map(column.PropName))}
-        data={items}
+        data={hoge}
         fixedHeader={true}
         pagination={true}
         paginationPerPage={30}

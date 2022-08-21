@@ -1,4 +1,5 @@
 import { SkillCategory } from '../utils';
+import { Item } from '../utils';
 
 const constants: {
   jobs: { id: number; en: string; ja: string; ens: string; jas: string }[];
@@ -16,3 +17,14 @@ export const skills = constants.skills.filter(
     (skill.category === 'Combat' && !['回避', '受け流し', 'ガード'].includes(skill.ja)) ||
     ['管楽器', '弦楽器'].includes(skill.ja)
 );
+
+const data: Item[] = require('./items.json');
+
+export const normalize = (s: string): string =>
+  s.replace(/[Ａ-Ｚａ-ｚ０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xfee0));
+
+export const items = data.map(item => ({
+  ...item,
+  description: normalize(item.description),
+  name: normalize(item.name),
+}));

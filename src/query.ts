@@ -1,5 +1,6 @@
 import { Item } from '../utils';
 import { Condition } from './condition';
+import { normalize } from './constants';
 
 export function Apply(cond: Condition, item: Item[]): Item[] {
   const f = new FilterSet(cond);
@@ -34,7 +35,8 @@ class FilterSet implements FilterInterface {
   }
 }
 
-function textFilter(word: string): FilterInterface {
+function textFilter(raw: string): FilterInterface {
+  const word = normalize(raw);
   const gte = word.match(/^(.*)>=([-+]?\d+)$/);
   if (gte) {
     const prop = propValue(gte[1]);
