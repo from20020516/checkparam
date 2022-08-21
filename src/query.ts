@@ -85,7 +85,7 @@ class Filter<T> implements FilterInterface {
 }
 
 export function propValue(prop: string): extractor<number> {
-  const re = new RegExp(`(^|\\s)${prop}([-+]\\d+)`);
+  const re = new RegExp(`(^|\\s)${prop}([-+]?\\d+)`);
   return (item: Item) => {
     const x = item.description.match(re);
     return x ? Number(x[2]) : null;
