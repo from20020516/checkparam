@@ -69,9 +69,8 @@ const App = () => {
   const initial = Decode(new URLSearchParams(document.location.search));
   const [cond, dispatchCondition] = useReducer(Reducer, initial);
 
-  useEffect(() => {
-    updateSearchParam(cond);
-  }, [cond]);
+  useEffect(() => {}, [cond]);
+  updateSearchParam(cond);
 
   const words = cond.text
     .split(/\s/)

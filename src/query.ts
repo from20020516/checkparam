@@ -11,23 +11,24 @@ interface FilterInterface {
   accept(item: Item): boolean;
 }
 
+class AllOK implements FilterInterface {
+  accept(item: Item): boolean {
+    return true;
+  }
+}
+
+const allOK = new AllOK();
+
 class FilterSet implements FilterInterface {
   private fs: FilterInterface[];
 
   constructor(cond: Condition) {
-    this.fs = cond.text.split(/\s/).map(x => textFilter(x)) ?? [];
-    if (cond.job_flags) {
-      this.fs.push(jobFilter(cond.job_flags));
-    }
-    if (cond.slot_flags) {
-      this.fs.push(slotFilter(cond.slot_flags));
-    }
-    if (cond.skill.size > 0) {
-      this.fs.push(skillFilter(cond.skill));
-    }
-    if (cond.minLevel) {
-      this.fs.push(minLevelFilter(cond.minLevel));
-    }
+    this.fs = [
+      ...cond.text.split(/\s/).map(x => textFilter(x)),
+      cond.job_flags ? jobFilter(cond.job_flags) : allOK,
+      kindFilter(cond),
+      cond.minLevel ? minLevelFilter(cond.minLevel) : allOK,
+    ];
   }
 
   accept(item: Item): boolean {
@@ -86,6 +87,19 @@ class Filter<T> implements FilterInterface {
   }
 }
 
+class Or implements FilterInterface {
+  f: FilterInterface;
+  g: FilterInterface;
+
+  constructor(f: FilterInterface, g: FilterInterface) {
+    this.f = f;
+    this.g = g;
+  }
+  accept(item: Item): boolean {
+    return this.f.accept(item) || this.g.accept(item);
+  }
+}
+
 export function propValue(prop: string): extractor<number> {
   const re = new RegExp(`(^|\\s)${prop}([-+]?\\d+)`, 'i');
   return (item: Item) => {
@@ -101,6 +115,13 @@ function jobFilter(job_flags: number): Filter<number> {
     item => item._jobs,
     that => (that & job_flags) > 0
   );
+}
+
+function kindFilter(cond: Condition): FilterInterface {
+  if (cond.slot_flags || cond.skill.size > 0) {
+    return new Or(slotFilter(cond.slot_flags), skillFilter(cond.skill));
+  }
+  return allOK;
 }
 
 function slotFilter(slot_flags: number): Filter<number> {

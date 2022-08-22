@@ -67,13 +67,11 @@ export const Encode = (cond: Condition): URLSearchParams => {
   return ret;
 };
 
-const onlyDefined = <T>(x: T | undefined): x is T => true;
-
 const decodeFlags = (s: string, table: Map<string, number>): number => {
   return s
     .split(sep)
     .map(x => table.get(x))
-    .filter(onlyDefined)
+    .filter((id): id is number => typeof id === 'number')
     .reduce((acc, id) => acc | (1 << id), 0);
 };
 
@@ -81,7 +79,7 @@ const decodeSet = (s: string, table: Map<string, number>): Set<number> => {
   return s
     .split(sep)
     .map(x => table.get(x))
-    .filter(onlyDefined)
+    .filter((id): id is number => typeof id === 'number')
     .reduce((acc, id) => acc.add(id), new Set<number>());
 };
 
