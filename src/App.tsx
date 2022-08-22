@@ -1,9 +1,12 @@
-import { useReducer } from 'react';
-import { Item } from '../utils';
+import { useReducer, useEffect } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
-import { Reducer, SetText, SetJob, SetSlot, SetSkill, SetMinLevel, Reset, Initial } from './condition';
-import { jobs, slots, skills, items, normalize } from './constants';
+import { createBrowserHistory } from 'history';
+
+import { Reducer, SetText, SetJob, SetSlot, SetSkill, SetMinLevel, Reset } from './condition';
+import { jobs, slots, skills, items, normalize, Encode, Decode } from './constants';
+import { Condition } from './condition';
+import { Item } from '../utils';
 import * as filter from './query';
 import * as column from './column';
 
@@ -56,8 +59,19 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
   },
 ];
 
+const updateSearchParam = (cond: Condition): void => {
+  createBrowserHistory().push({
+    search: Encode(cond).toString(),
+  });
+};
+
 const App = () => {
-  const [cond, dispatchCondition] = useReducer(Reducer, Initial());
+  const initial = Decode(new URLSearchParams(document.location.search));
+  const [cond, dispatchCondition] = useReducer(Reducer, initial);
+
+  useEffect(() => {
+    updateSearchParam(cond);
+  }, [cond]);
 
   const words = cond.text
     .split(/\s/)

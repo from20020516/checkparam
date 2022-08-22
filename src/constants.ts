@@ -1,5 +1,5 @@
-import { SkillCategory } from '../utils';
-import { Item } from '../utils';
+import { Item, SkillCategory } from '../utils';
+import { Condition } from './condition';
 
 const constants: {
   jobs: { id: number; en: string; ja: string; ens: string; jas: string }[];
@@ -10,7 +10,7 @@ const constants: {
 // 0:なし と 23:モンストロス を除外
 export const jobs = constants.jobs.slice(1, -1);
 
-export const slots = constants.slots;
+export const slots = constants.slots.filter(x => x.id > 0);
 
 export const skills = constants.skills.filter(
   skill =>
@@ -28,3 +28,75 @@ export const items = data.map(item => ({
   description: normalize(item.description),
   name: normalize(item.name),
 }));
+
+const sep = ' ';
+
+const jobNames = (cond: Condition): string => {
+  return jobs
+    .filter(x => (1 << x.id) & cond.job_flags)
+    .map(x => x.jas)
+    .join(sep);
+};
+const slotNames = (cond: Condition): string => {
+  return slots
+    .filter(x => (1 << x.id) & cond.slot_flags)
+    .map(x => x.ja)
+    .join(sep);
+};
+const skillNames = (cond: Condition): string => {
+  return skills
+    .filter(x => cond.skill.has(x.id))
+    .map(x => x.ja)
+    .join(sep);
+};
+
+export const Encode = (cond: Condition): URLSearchParams => {
+  const p: { [index: string]: string } = {
+    t: cond.text,
+    job: jobNames(cond),
+    slot: slotNames(cond),
+    skill: skillNames(cond),
+    minLevel: cond.minLevel ? String(cond.minLevel) : '',
+  };
+  const ret = new URLSearchParams();
+  Object.keys(p)
+    .filter(key => p[key] !== '')
+    .forEach(key => {
+      ret.append(key, p[key]);
+    });
+  return ret;
+};
+
+const onlyDefined = <T>(x: T | undefined): x is T => true;
+
+const decodeFlags = (s: string, table: Map<string, number>): number => {
+  return s
+    .split(sep)
+    .map(x => table.get(x))
+    .filter(onlyDefined)
+    .reduce((acc, id) => acc | (1 << id), 0);
+};
+
+const decodeSet = (s: string, table: Map<string, number>): Set<number> => {
+  return s
+    .split(sep)
+    .map(x => table.get(x))
+    .filter(onlyDefined)
+    .reduce((acc, id) => acc.add(id), new Set<number>());
+};
+
+export const Decode = (p: URLSearchParams): Condition => {
+  return {
+    text: p.get('t') ?? '',
+    job_flags: decodeFlags(p.get('job') ?? '', Repository.job),
+    skill: decodeSet(p.get('skill') ?? '', Repository.skill),
+    slot_flags: decodeFlags(p.get('slot') ?? '', Repository.slot),
+    minLevel: Number(p.get('minLevel')),
+  };
+};
+
+export const Repository = {
+  job: jobs.reduce((acc, x) => acc.set(x.jas, x.id), new Map()),
+  skill: skills.reduce((acc, x) => acc.set(x.ja, x.id), new Map()),
+  slot: slots.reduce((acc, x) => acc.set(x.ja, x.id), new Map()),
+};
