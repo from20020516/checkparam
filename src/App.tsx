@@ -65,7 +65,7 @@ const App = () => {
     .map(normalize);
   const props = column.PropNames(words);
   const extra = props.map(column.Extra);
-  const hoge = filter.Apply(cond, items).sort(column.Sorter(props));
+  const data = filter.Apply(cond, items).sort(column.Sorter(props));
 
   return (
     <div>
@@ -152,7 +152,7 @@ const App = () => {
       </div>
       <DataTable
         columns={columns(extra, words.map(column.PropName))}
-        data={hoge}
+        data={data}
         fixedHeader={true}
         pagination={true}
         paginationPerPage={30}

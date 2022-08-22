@@ -15,7 +15,7 @@ export const slots = constants.slots;
 export const skills = constants.skills.filter(
   skill =>
     (skill.category === 'Combat' && !['回避', '受け流し', 'ガード'].includes(skill.ja)) ||
-    ['管楽器', '弦楽器'].includes(skill.ja)
+    ['管楽器', '弦楽器', '風水鈴'].includes(skill.ja)
 );
 
 const data: Item[] = require('./items.json');
