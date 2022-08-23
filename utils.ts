@@ -72,6 +72,7 @@ export interface Item {
   _slots: number;
   skill: number;
   type: string;
+  category: string;
 }
 
 const AllJobs = parseInt('11111111111111111111110', 2);
@@ -115,6 +116,7 @@ const convertRawItem = (item: RawItem) => {
         _slots: item.slots,
         skill: 0,
         type: '',
+        category: item.category,
       };
       const slot = [
         ...Number(item.slots)
