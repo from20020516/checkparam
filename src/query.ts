@@ -68,7 +68,12 @@ function textFilter(raw: string): FilterInterface {
     const value = Number(eq[2]);
     return new Filter(prop, x => x === value);
   }
-  return new Filter(wholeText, x => x.toLowerCase().includes(word.toLowerCase()));
+  const not = word.match(/^-(.*)$/);
+  if (not) {
+    const val = not[1];
+    return new Filter(wholeTextLowerCase, lc => !lc.includes(val.toLowerCase()));
+  }
+  return new Filter(wholeTextLowerCase, lc => lc.includes(word.toLowerCase()));
 }
 
 type extractor<T> = (item: Item) => T | null;
@@ -87,19 +92,6 @@ class Filter<T> implements FilterInterface {
   }
 }
 
-class Or implements FilterInterface {
-  f: FilterInterface;
-  g: FilterInterface;
-
-  constructor(f: FilterInterface, g: FilterInterface) {
-    this.f = f;
-    this.g = g;
-  }
-  accept(item: Item): boolean {
-    return this.f.accept(item) || this.g.accept(item);
-  }
-}
-
 export function propValue(prop: string): extractor<number> {
   const re = new RegExp(`(^|\\s)${prop}([-+]?\\d+)`, 'i');
   return (item: Item) => {
@@ -108,7 +100,7 @@ export function propValue(prop: string): extractor<number> {
   };
 }
 
-const wholeText: extractor<string> = (item: Item) => [item.name, item.description].join();
+const wholeTextLowerCase: extractor<string> = (item: Item) => [item.name, item.description].join().toLowerCase();
 
 function jobFilter(job_flags: number): Filter<number> {
   return new Filter(
@@ -149,4 +141,17 @@ function kindFilter(cond: Condition): FilterInterface {
     return skillFilter(cond.skill);
   }
   return allOK;
+}
+
+class Or implements FilterInterface {
+  f: FilterInterface;
+  g: FilterInterface;
+
+  constructor(f: FilterInterface, g: FilterInterface) {
+    this.f = f;
+    this.g = g;
+  }
+  accept(item: Item): boolean {
+    return this.f.accept(item) || this.g.accept(item);
+  }
 }
