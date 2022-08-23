@@ -1,5 +1,6 @@
 import { Item } from '../utils';
 import { Condition } from './condition';
+import { normalize } from './constants';
 
 export function Apply(cond: Condition, item: Item[]): Item[] {
   const f = new FilterSet(cond);
@@ -21,7 +22,7 @@ class FilterSet implements FilterInterface {
     if (cond.slot_flags) {
       this.fs.push(slotFilter(cond.slot_flags));
     }
-    if (cond.skill) {
+    if (cond.skill.size > 0) {
       this.fs.push(skillFilter(cond.skill));
     }
     if (cond.minLevel) {
@@ -34,7 +35,8 @@ class FilterSet implements FilterInterface {
   }
 }
 
-function textFilter(word: string): FilterInterface {
+function textFilter(raw: string): FilterInterface {
+  const word = normalize(raw);
   const gte = word.match(/^(.*)>=([-+]?\d+)$/);
   if (gte) {
     const prop = propValue(gte[1]);
@@ -65,7 +67,7 @@ function textFilter(word: string): FilterInterface {
     const value = Number(eq[2]);
     return new Filter(prop, x => x === value);
   }
-  return new Filter(wholeText, x => x.includes(word));
+  return new Filter(wholeText, x => x.toLowerCase().includes(word.toLowerCase()));
 }
 
 type extractor<T> = (item: Item) => T | null;
@@ -85,7 +87,7 @@ class Filter<T> implements FilterInterface {
 }
 
 export function propValue(prop: string): extractor<number> {
-  const re = new RegExp(`(^|\\s)${prop}([-+]\\d+)`);
+  const re = new RegExp(`(^|\\s)${prop}([-+]?\\d+)`, 'i');
   return (item: Item) => {
     const x = item.description.match(re);
     return x ? Number(x[2]) : null;
@@ -108,16 +110,16 @@ function slotFilter(slot_flags: number): Filter<number> {
   );
 }
 
-function skillFilter(skill: number): Filter<number> {
+function skillFilter(skill: Set<number>): Filter<number> {
   return new Filter(
     item => item.skill,
-    id => ((1 << id) & skill) > 0
+    id => (skill.size > 0 ? skill.has(id) : true)
   );
 }
 
 function minLevelFilter(level: number): Filter<number> {
   return new Filter(
-    item => item.item_level ?? item.level,
+    item => (item.item_level > 0 ? item.item_level : item.level),
     that => that >= level
   );
 }

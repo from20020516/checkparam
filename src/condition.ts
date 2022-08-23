@@ -1,7 +1,7 @@
 export type Condition = {
   job_flags: number;
   slot_flags: number;
-  skill: number;
+  skill: Set<number>;
   text: string;
   minLevel: number;
 };
@@ -30,11 +30,19 @@ export function SetSlot(bits: number): Action {
   });
 }
 
-export function SetSkill(bits: number): Action {
-  return (cond: Condition): Condition => ({
-    ...cond,
-    skill: cond.skill ^ (1 << bits),
-  });
+const toggle = <T>(xs: Set<T>, x: T): Set<T> => {
+  const ret = new Set(xs);
+  ret.has(x) ? ret.delete(x) : ret.add(x);
+  return ret;
+};
+
+export function SetSkill(skill: number): Action {
+  return (cond: Condition): Condition => {
+    return {
+      ...cond,
+      skill: toggle(cond.skill, skill),
+    };
+  };
 }
 
 export function SetMinLevel(level: number): Action {
@@ -50,7 +58,7 @@ export function Initial(): Condition {
   return {
     job_flags: 0,
     slot_flags: 0,
-    skill: 0,
+    skill: new Set(),
     minLevel: 0,
     text: '',
   };
