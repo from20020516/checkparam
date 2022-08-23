@@ -37,8 +37,6 @@ const composeExtract = <T>(ext: extractor<T>, f: (x: T) => boolean): Filter => {
   };
 };
 
-const acceptAlways = () => true;
-
 const textFilter = (raw: string): Filter => {
   const word = normalize(raw);
   const gte = word.match(/^(.*)>=([-+]?\d+)$/);
@@ -78,6 +76,8 @@ const textFilter = (raw: string): Filter => {
   }
   return composeExtract(wholeTextLowerCase, lc => lc.includes(word.toLowerCase()));
 };
+
+const acceptAlways = () => true;
 
 const jobFilter = (cond: Condition): Filter =>
   cond.job_flags > 0
