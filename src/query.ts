@@ -117,13 +117,6 @@ function jobFilter(job_flags: number): Filter<number> {
   );
 }
 
-function kindFilter(cond: Condition): FilterInterface {
-  if (cond.slot_flags || cond.skill.size > 0) {
-    return new Or(slotFilter(cond.slot_flags), skillFilter(cond.skill));
-  }
-  return allOK;
-}
-
 function slotFilter(slot_flags: number): Filter<number> {
   return new Filter(
     item => item._slots,
@@ -143,4 +136,17 @@ function minLevelFilter(level: number): Filter<number> {
     item => (item.item_level > 0 ? item.item_level : item.level),
     that => that >= level
   );
+}
+
+function kindFilter(cond: Condition): FilterInterface {
+  if (cond.slot_flags && cond.skill.size > 0) {
+    return new Or(slotFilter(cond.slot_flags), skillFilter(cond.skill));
+  }
+  if (cond.slot_flags) {
+    return slotFilter(cond.slot_flags);
+  }
+  if (cond.skill.size > 0) {
+    return skillFilter(cond.skill);
+  }
+  return allOK;
 }
