@@ -1,6 +1,6 @@
-import { Item } from '../utils';
+import { Item } from './types';
 import { Condition } from './condition';
-import { normalize, slots, skills } from './constants';
+import { normalize } from './const';
 
 type Filter = (item: Item) => boolean;
 
@@ -88,35 +88,8 @@ const jobFilter = (cond: Condition): Filter =>
       )
     : acceptAlways;
 
-const slotNames = slots.reduce((acc, s) => acc.set(1 << s.id, s.ja), new Map());
-const skillNames = skills.reduce((acc, s) => acc.set(s.id, s.ja), new Map());
-
-const ear1 = 1 << 11;
-const ear2 = 1 << 12;
-const ring1 = 1 << 13;
-const ring2 = 1 << 14;
-const ears = ear1 | ear2;
-const rings = ring1 | ring2;
-
-const extractType: extractor<string> = (item: Item): string | null => {
-  if (item.skill) {
-    return skillNames.get(item.skill) ?? null;
-  }
-  if (item._slots) {
-    const slot = item._slots;
-    return slot === ears
-      ? '耳'
-      : slot === rings
-      ? '指'
-      : slotNames.get(slot) ?? null;
-  }
-  return null;
-};
-
 const typeFilter = (cond: Condition): Filter => {
-  return cond.types.size > 0
-    ? extractAndCheck(extractType, t => cond.types.has(t))
-    : acceptAlways;
+  return cond.types.size > 0 ? item => cond.types.has(item.type) : acceptAlways;
 };
 
 const levelFilter = (cond: Condition): Filter =>

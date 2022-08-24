@@ -1,4 +1,4 @@
-import { Item } from '../utils';
+import { Item } from './types';
 import { TableColumn } from 'react-data-table-component';
 import { propValue } from './filter';
 

@@ -13,15 +13,17 @@ import {
 } from './condition';
 import {
   jobs,
-  slots,
-  skills,
+  armor,
+  weapon,
+  shield,
+  miscWeapon,
   items,
   normalize,
   Encode,
   Decode,
-} from './constants';
+} from './const';
 import { Condition } from './condition';
-import { Item } from '../utils';
+import { Item } from './types';
 import * as filter from './filter';
 import * as column from './column';
 
@@ -97,6 +99,7 @@ const updateSearchParam = (cond: Condition): void => {
 const App = () => {
   const initial = Decode(new URLSearchParams(document.location.search));
   const [cond, dispatchCondition] = useReducer(Reducer, initial);
+  console.log(cond);
 
   useEffect(() => {
     updateSearchParam(cond);
@@ -109,6 +112,19 @@ const App = () => {
   const props = column.PropNames(words);
   const extra = props.map(column.Extra);
   const data = items.filter(filter.Build(cond)).sort(column.Sorter(props));
+
+  const miscButton = (t: string) => (
+    <button
+      key={t}
+      onClick={() => dispatchCondition(SetType(t))}
+      style={{
+        background: cond.types.has(t) ? 'mistyrose' : 0,
+        border: 0,
+      }}
+    >
+      {t}
+    </button>
+  );
 
   return (
     <div>
@@ -146,7 +162,7 @@ const App = () => {
         </div>
         <div>
           スキル：
-          {skills.map(skill => (
+          {weapon.map(skill => (
             <button
               key={skill.ja}
               onClick={() => dispatchCondition(SetType(skill.ja))}
@@ -158,10 +174,12 @@ const App = () => {
               {skill.ja}
             </button>
           ))}
+          {Object.values(miscWeapon).map(miscButton)}
         </div>
         <div>
           装備枠：
-          {slots.map(slot => (
+          {miscButton(shield)}
+          {armor.map(slot => (
             <button
               key={slot.ja}
               onClick={() => dispatchCondition(SetType(slot.ja))}
