@@ -49,18 +49,18 @@ export const SlotName = {
 };
 
 // 0:なし と 23:モンストロス を除外
-export const jobs = constants.jobs.slice(1, -1);
+export const Job = constants.jobs.slice(1, -1);
 
-export const armor = constants.slots;
+export const Armor = constants.slots;
 
-export const weapon = constants.skills.filter(
+export const Weapon = constants.skills.filter(
   skill =>
     skill.category === 'Combat' &&
     !['回避', '受け流し', 'ガード', '盾', '投てき'].includes(skill.ja)
 );
 
-export const shield = '盾';
-export const miscWeapon = {
+export const Shield = '盾';
+export const MiscWeapon = {
   Throwing: '投てき',
   Ammo: '矢弾',
   Grip: 'グリップ',
@@ -71,20 +71,20 @@ export const miscWeapon = {
 
 const data: Item[] = require('./items.json');
 
-export const normalize = (s: string): string =>
+export const Normalize = (s: string): string =>
   s.replace(/[Ａ-Ｚａ-ｚ０-９]/g, c =>
     String.fromCharCode(c.charCodeAt(0) - 0xfee0)
   );
 
-export const items = data.map(item => ({
+export const Items = data.map(item => ({
   ...item,
-  description: normalize(item.description),
-  name: normalize(item.name),
+  description: Normalize(item.description),
+  name: Normalize(item.name),
 }));
 
 const Repository = {
-  jobID: jobs.reduce((acc, x) => acc.set(x.jas, x.id), new Map()),
-  skillName: weapon.reduce((acc, s) => acc.set(s.id, s.ja), new Map()),
+  jobID: Job.reduce((acc, x) => acc.set(x.jas, x.id), new Map()),
+  skillName: Weapon.reduce((acc, s) => acc.set(s.id, s.ja), new Map()),
 };
 
 export const ItemType = (item: RawItem): string => {
@@ -94,11 +94,11 @@ export const ItemType = (item: RawItem): string => {
   if (item.slots) {
     switch (item.slots) {
       case SlotID.Sub:
-        return item.category === 'Weapon' ? miscWeapon.Grip : shield;
+        return item.category === 'Weapon' ? MiscWeapon.Grip : Shield;
       case SlotID.Range:
-        return miscWeapon.Throwing;
+        return MiscWeapon.Throwing;
       case SlotID.Ammo:
-        return miscWeapon.Ammo;
+        return MiscWeapon.Ammo;
       default:
         return SlotName[item.slots] ?? 'unknown slot';
     }
@@ -109,8 +109,7 @@ export const ItemType = (item: RawItem): string => {
 const sep = ' ';
 
 const jobNames = (cond: Condition): string => {
-  return jobs
-    .filter(x => (1 << x.id) & cond.job_flags)
+  return Job.filter(x => (1 << x.id) & cond.job_flags)
     .map(x => x.jas)
     .join(sep);
 };

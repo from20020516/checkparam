@@ -12,13 +12,13 @@ import {
   Reset,
 } from './condition';
 import {
-  jobs,
-  armor,
-  weapon,
-  shield,
-  miscWeapon,
-  items,
-  normalize,
+  Job,
+  Armor,
+  Weapon,
+  Shield,
+  MiscWeapon,
+  Items,
+  Normalize,
   Encode,
   Decode,
 } from './const';
@@ -108,10 +108,10 @@ const App = () => {
   const words = cond.text
     .split(/\s/)
     .filter(t => t !== '')
-    .map(normalize);
+    .map(Normalize);
   const props = column.PropNames(words);
   const extra = props.map(column.Extra);
-  const data = items.filter(filter.Build(cond)).sort(column.Sorter(props));
+  const data = Items.filter(filter.Build(cond)).sort(column.Sorter(props));
 
   const miscButton = (t: string) => (
     <button
@@ -147,7 +147,7 @@ const App = () => {
         </div>
         <div>
           ジョブ：
-          {jobs.map(job => (
+          {Job.map(job => (
             <button
               key={job.jas}
               onClick={() => dispatchCondition(SetJob(job.id))}
@@ -162,7 +162,7 @@ const App = () => {
         </div>
         <div>
           スキル：
-          {weapon.map(skill => (
+          {Weapon.map(skill => (
             <button
               key={skill.ja}
               onClick={() => dispatchCondition(SetType(skill.ja))}
@@ -174,12 +174,12 @@ const App = () => {
               {skill.ja}
             </button>
           ))}
-          {Object.values(miscWeapon).map(miscButton)}
+          {Object.values(MiscWeapon).map(miscButton)}
         </div>
         <div>
           装備枠：
-          {miscButton(shield)}
-          {armor.map(slot => (
+          {miscButton(Shield)}
+          {Armor.map(slot => (
             <button
               key={slot.ja}
               onClick={() => dispatchCondition(SetType(slot.ja))}

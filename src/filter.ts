@@ -1,6 +1,6 @@
 import { Item } from './types';
 import { Condition } from './condition';
-import { normalize } from './const';
+import { Normalize } from './const';
 
 type Filter = (item: Item) => boolean;
 
@@ -34,7 +34,7 @@ const extractAndCheck = <T>(
 };
 
 const textFilter = (raw: string): Filter => {
-  const word = normalize(raw);
+  const word = Normalize(raw);
   const gte = word.match(/^(.*)>=([-+]?\d+)$/);
   if (gte) {
     const prop = propValue(gte[1]);
