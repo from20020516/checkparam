@@ -56,6 +56,16 @@ export function Initial(): Condition {
   };
 }
 
+export const StoreParam = (cond: Condition): void => {
+  createBrowserHistory().push({
+    search: encode(cond).toString(),
+  });
+};
+
+export const LoadParam = (): Condition => {
+  return decode(new URLSearchParams(document.location.search));
+};
+
 const sep = ' ';
 const jobNames = (cond: Condition): string => {
   return Job.filter(x => (1 << x.id) & cond.job_flags)
@@ -111,13 +121,4 @@ const decode = (p: URLSearchParams): Condition => {
     minLevel: Number(p.get('minLevel')),
     types: decodeSet(p.get('type') ?? ''),
   };
-};
-
-export const StoreParam = (cond: Condition): void => {
-  createBrowserHistory().push({
-    search: encode(cond).toString(),
-  });
-};
-export const LoadParam = (): Condition => {
-  return decode(new URLSearchParams(document.location.search));
 };
