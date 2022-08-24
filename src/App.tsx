@@ -23,7 +23,7 @@ import {
 } from './constants';
 import { Condition } from './condition';
 import { Item } from '../utils';
-import * as filter from './query';
+import * as filter from './filter';
 import * as column from './column';
 
 const columns = (
