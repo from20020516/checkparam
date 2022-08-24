@@ -2,7 +2,7 @@ import { parse } from 'lua-json';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { RawItem, Item, SkillCategory } from './src/types';
-import { jobs, ItemType, SlotName } from './src/const';
+import { Job, ItemType, SlotName } from './src/const';
 
 const AllJobs = parseInt('11111111111111111111110', 2);
 
@@ -14,8 +14,7 @@ const AllJobs = parseInt('11111111111111111111110', 2);
 const convertDecimalJobToString = (decimal: number) => {
   return decimal === AllJobs
     ? 'All Jobs'
-    : jobs
-        .filter(x => (1 << x.id) & decimal)
+    : Job.filter(x => (1 << x.id) & decimal)
         .map(x => x.jas)
         .join('');
 };
