@@ -2,22 +2,9 @@ import { parse } from 'lua-json';
 import { writeFileSync } from 'fs';
 import { join } from 'path';
 import { RawItem, Item, SkillCategory } from './src/types';
-import { Job, ItemType, SlotName } from './src/const';
+import { ItemType } from './src/const';
 
 const AllJobs = parseInt('11111111111111111111110', 2);
-
-/**
- * 2進数表記ジョブを文字列表記に変換する
- * @param decimal 17282
- * @returns '戦ナ暗獣竜'
- */
-const convertDecimalJobToString = (decimal: number) => {
-  return decimal === AllJobs
-    ? 'All Jobs'
-    : Job.filter(x => (1 << x.id) & decimal)
-        .map(x => x.jas)
-        .join('');
-};
 
 /** アイテムから装備品を抽出し、アプリケーションで使用する形式に変換する */
 const convertRawItem = (item: RawItem) => {
@@ -66,22 +53,9 @@ const convertRawItem = (item: RawItem) => {
           )
         ).text()
       ) as [{ id: number; en: string; ja: string; category: SkillCategory }[]];
-      const [slots] = parse(
-        await (
-          await fetch(
-            'https://raw.githubusercontent.com/Windower/Resources/master/resources_data/slots.lua'
-          )
-        ).text()
-      ) as [{ id: number; en: string; ja: string }[]];
       const constants = {
         jobs: Object.values(jobs),
         skills: Object.values(skills),
-        slots: Object.values(slots)
-          .map(slot => ({
-            ...slot,
-            ja: SlotName[1 << slot.id],
-          }))
-          .filter(slot => slot.ja),
       };
       writeFileSync(
         join(__dirname, './src/constants.json'),

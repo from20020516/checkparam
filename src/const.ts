@@ -3,7 +3,6 @@ import { Condition } from './condition';
 
 const constants: {
   jobs: { id: number; en: string; ja: string; ens: string; jas: string }[];
-  slots: { id: number; en: string; ja: string }[];
   skills: {
     id: number;
     en: string;
@@ -33,6 +32,7 @@ export const SlotID = {
   Ring: (1 << 13) | (1 << 14),
   Back: 1 << 15,
 };
+
 export const SlotName = {
   [SlotID.Head]: '頭',
   [SlotID.Body]: '胴',
@@ -41,9 +41,7 @@ export const SlotName = {
   [SlotID.Feet]: '足',
   [SlotID.Neck]: '首',
   [SlotID.Waist]: '腰',
-  [SlotID.EarL]: '耳',
   [SlotID.Ear]: '耳',
-  [SlotID.RingL]: '指',
   [SlotID.Ring]: '指',
   [SlotID.Back]: '背',
 };
@@ -51,16 +49,18 @@ export const SlotName = {
 // 0:なし と 23:モンストロス を除外
 export const Job = constants.jobs.slice(1, -1);
 
-export const Armor = constants.slots;
-
-export const Weapon = constants.skills.filter(
+const skills = constants.skills.filter(
   skill =>
-    skill.category === 'Combat' &&
-    !['回避', '受け流し', 'ガード', '盾', '投てき'].includes(skill.ja)
+    (skill.category === 'Combat' &&
+      !['回避', '受け流し', 'ガード', '投てき'].includes(skill.ja)) ||
+    ['管楽器', '弦楽器', '風水鈴'].includes(skill.ja)
 );
 
-export const Shield = '盾';
-export const MiscWeapon = {
+const weapon = skills
+  .filter(skill => !['管楽器', '弦楽器', '風水鈴'].includes(skill.ja))
+  .map(x => x.ja);
+
+const miscWeapon = {
   Throwing: '投てき',
   Ammo: '矢弾',
   Grip: 'グリップ',
@@ -68,6 +68,11 @@ export const MiscWeapon = {
   Stringed: '弦楽器',
   Handbell: '風水鈴',
 } as const;
+const shield = '盾';
+
+export const Weapon = [...weapon, ...Object.values(miscWeapon)];
+
+export const Armor = [shield, ...Object.values(SlotName)];
 
 const data: Item[] = require('./items.json');
 
@@ -82,23 +87,23 @@ export const Items = data.map(item => ({
   name: Normalize(item.name),
 }));
 
-const Repository = {
-  jobID: Job.reduce((acc, x) => acc.set(x.jas, x.id), new Map()),
-  skillName: Weapon.reduce((acc, s) => acc.set(s.id, s.ja), new Map()),
-};
+const skillName = skills.reduce((acc, s) => acc.set(s.id, s.ja), new Map());
 
 export const ItemType = (item: RawItem): string => {
   if (item.skill) {
-    return Repository.skillName.get(item.skill) ?? 'unknown skill';
+    const name = skillName.get(item.skill);
+    if (name) {
+      return name;
+    }
   }
   if (item.slots) {
     switch (item.slots) {
       case SlotID.Sub:
-        return item.category === 'Weapon' ? MiscWeapon.Grip : Shield;
+        return item.category === 'Weapon' ? miscWeapon.Grip : shield;
       case SlotID.Range:
-        return MiscWeapon.Throwing;
+        return miscWeapon.Throwing;
       case SlotID.Ammo:
-        return MiscWeapon.Ammo;
+        return miscWeapon.Ammo;
       default:
         return SlotName[item.slots] ?? 'unknown slot';
     }
@@ -157,10 +162,12 @@ const decodeSet = (s: string): Set<string> => {
     .reduce((acc, x) => acc.add(x), new Set<string>());
 };
 
+const jobID = Job.reduce((acc, x) => acc.set(x.jas, x.id), new Map());
+
 export const Decode = (p: URLSearchParams): Condition => {
   return {
     text: p.get('t') ?? '',
-    job_flags: decodeFlags(p.get('job') ?? '', Repository.jobID),
+    job_flags: decodeFlags(p.get('job') ?? '', jobID),
     minLevel: Number(p.get('minLevel')),
     types: decodeSet(p.get('type') ?? ''),
   };

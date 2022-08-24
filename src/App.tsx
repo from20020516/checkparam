@@ -15,8 +15,6 @@ import {
   Job,
   Armor,
   Weapon,
-  Shield,
-  MiscWeapon,
   Items,
   Normalize,
   Encode,
@@ -114,19 +112,6 @@ const App = () => {
   const extra = props.map(column.Extra);
   const data = Items.filter(filter.Build(cond)).sort(column.Sorter(props));
 
-  const miscButton = (t: string) => (
-    <button
-      key={t}
-      onClick={() => dispatchCondition(SetType(t))}
-      style={{
-        background: cond.types.has(t) ? 'mistyrose' : 0,
-        border: 0,
-      }}
-    >
-      {t}
-    </button>
-  );
-
   return (
     <div>
       <div
@@ -163,33 +148,31 @@ const App = () => {
         </div>
         <div>
           スキル：
-          {Weapon.map(skill => (
+          {Weapon.map(name => (
             <button
-              key={skill.ja}
-              onClick={() => dispatchCondition(SetType(skill.ja))}
+              key={name}
+              onClick={() => dispatchCondition(SetType(name))}
               style={{
-                background: cond.types.has(skill.ja) ? 'mistyrose' : 0,
+                background: cond.types.has(name) ? 'mistyrose' : 0,
                 border: 0,
               }}
             >
-              {skill.ja}
+              {name}
             </button>
           ))}
-          {Object.values(MiscWeapon).map(miscButton)}
         </div>
         <div>
           装備枠：
-          {miscButton(Shield)}
           {Armor.map(slot => (
             <button
-              key={slot.ja}
-              onClick={() => dispatchCondition(SetType(slot.ja))}
+              key={slot}
+              onClick={() => dispatchCondition(SetType(slot))}
               style={{
-                background: cond.types.has(slot.ja) ? 'mistyrose' : 0,
+                background: cond.types.has(slot) ? 'mistyrose' : 0,
                 border: 0,
               }}
             >
-              {slot.ja}
+              {slot}
             </button>
           ))}
           <button
