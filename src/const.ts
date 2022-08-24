@@ -1,5 +1,4 @@
 import { Item, RawItem, Category, SkillCategory } from './types';
-import { Condition } from './condition';
 
 const constants: {
   jobs: { id: number; en: string; ja: string; ens: string; jas: string }[];
@@ -110,7 +109,6 @@ export const ItemType = (item: RawItem): string => {
   return '';
 };
 
-const sep = ' ';
 const AllJobs = parseInt('11111111111111111111110', 2);
 
 export const JobNames = (flags: number): string => {
@@ -120,60 +118,4 @@ export const JobNames = (flags: number): string => {
   return Job.filter(x => (1 << x.id) & flags)
     .map(x => x.jas)
     .join('');
-};
-
-const jobNames = (cond: Condition): string => {
-  return Job.filter(x => (1 << x.id) & cond.job_flags)
-    .map(x => x.jas)
-    .join(sep);
-};
-
-const typeNames = (cond: Condition): string => {
-  const tmp: string[] = [];
-  cond.types.forEach(x => {
-    tmp.push(x);
-  });
-  return tmp.join(sep);
-};
-
-export const Encode = (cond: Condition): URLSearchParams => {
-  const p: { [index: string]: string } = {
-    t: cond.text,
-    job: jobNames(cond),
-    minLevel: cond.minLevel ? String(cond.minLevel) : '',
-    type: typeNames(cond),
-  };
-  const ret = new URLSearchParams();
-  Object.keys(p)
-    .filter(key => p[key] !== '')
-    .forEach(key => {
-      ret.append(key, p[key]);
-    });
-  return ret;
-};
-
-const decodeFlags = (s: string, table: Map<string, number>): number => {
-  return s
-    .split(sep)
-    .map(x => table.get(x))
-    .filter((id): id is number => typeof id === 'number')
-    .reduce((acc, id) => acc | (1 << id), 0);
-};
-
-const decodeSet = (s: string): Set<string> => {
-  return s
-    .split(sep)
-    .filter(t => t !== '')
-    .reduce((acc, x) => acc.add(x), new Set<string>());
-};
-
-const jobID = Job.reduce((acc, x) => acc.set(x.jas, x.id), new Map());
-
-export const Decode = (p: URLSearchParams): Condition => {
-  return {
-    text: p.get('t') ?? '',
-    job_flags: decodeFlags(p.get('job') ?? '', jobID),
-    minLevel: Number(p.get('minLevel')),
-    types: decodeSet(p.get('type') ?? ''),
-  };
 };

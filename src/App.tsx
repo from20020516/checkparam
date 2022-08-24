@@ -1,7 +1,6 @@
 import { useReducer, useEffect } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
-import { createBrowserHistory } from 'history';
 
 import {
   Reducer,
@@ -10,18 +9,10 @@ import {
   SetType,
   SetMinLevel,
   Reset,
+  StoreParam,
+  LoadParam,
 } from './condition';
-import {
-  Job,
-  Armor,
-  Weapon,
-  Items,
-  Normalize,
-  Encode,
-  Decode,
-  JobNames,
-} from './const';
-import { Condition } from './condition';
+import { Job, Armor, Weapon, Items, Normalize, JobNames } from './const';
 import { Item } from './types';
 import * as filter from './filter';
 import * as column from './column';
@@ -88,19 +79,11 @@ const columns = (
   },
 ];
 
-const updateSearchParam = (cond: Condition): void => {
-  createBrowserHistory().push({
-    search: Encode(cond).toString(),
-  });
-};
-
 const App = () => {
-  const initial = Decode(new URLSearchParams(document.location.search));
-  const [cond, dispatchCondition] = useReducer(Reducer, initial);
-  console.log(cond);
+  const [cond, dispatchCondition] = useReducer(Reducer, LoadParam());
 
   useEffect(() => {
-    updateSearchParam(cond);
+    StoreParam(cond);
   }, [cond]);
 
   const words = cond.text
