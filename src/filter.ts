@@ -80,25 +80,26 @@ const textFilter = (raw: string): Filter => {
 
 const acceptAlways = () => true;
 
-const jobFilter = (cond: Condition): Filter =>
-  cond.job_flags > 0
-    ? extractAndCheck(
-        item => item._jobs,
-        that => (that & cond.job_flags) > 0
-      )
+const jobFilter = (cond: Condition): Filter => {
+  return cond.job_flags > 0
+    ? (item: Item) => (cond.job_flags & item.jobs) > 0
     : acceptAlways;
-
-const typeFilter = (cond: Condition): Filter => {
-  return cond.types.size > 0 ? item => cond.types.has(item.type) : acceptAlways;
 };
 
-const levelFilter = (cond: Condition): Filter =>
-  cond.minLevel
+const typeFilter = (cond: Condition): Filter => {
+  return cond.types.size > 0
+    ? (item: Item) => cond.types.has(item.type)
+    : acceptAlways;
+};
+
+const levelFilter = (cond: Condition): Filter => {
+  return cond.minLevel
     ? extractAndCheck(
         item => (item.item_level > 0 ? item.item_level : item.level),
         that => that >= cond.minLevel
       )
     : acceptAlways;
+};
 
 export function propValue(prop: string): extractor<number> {
   const re = new RegExp(`(^|\\s)${prop}([-+]?\\d+)`, 'i');

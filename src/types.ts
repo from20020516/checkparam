@@ -62,9 +62,7 @@ export interface Item {
   description: string;
   level: number;
   item_level: number;
-  jobs: string;
-  _jobs: number;
-  skill: number;
+  jobs: number;
   type: string;
   category: string;
 }

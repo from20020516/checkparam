@@ -34,9 +34,7 @@ const convertRawItem = (item: RawItem) => {
         description: item.ja,
         level: item.level!,
         item_level: item.item_level ?? 0,
-        jobs: convertDecimalJobToString(item.jobs),
-        _jobs: item.jobs,
-        skill: 0,
+        jobs: item.jobs,
         type: ItemType(item),
         category: item.category,
       };

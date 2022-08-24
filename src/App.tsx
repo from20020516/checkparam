@@ -21,6 +21,7 @@ import {
   Normalize,
   Encode,
   Decode,
+  JobNames,
 } from './const';
 import { Condition } from './condition';
 import { Item } from './types';
@@ -72,7 +73,7 @@ const columns = (
   },
   {
     name: 'ジョブ',
-    selector: row => row.jobs,
+    selector: row => JobNames(row.jobs),
     sortable: true,
     width: '28em',
   },

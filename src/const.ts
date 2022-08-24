@@ -108,11 +108,16 @@ export const ItemType = (item: RawItem): string => {
 
 const sep = ' ';
 
-const jobNames = (cond: Condition): string => {
-  return Job.filter(x => (1 << x.id) & cond.job_flags)
+export const JobNames = (flags: number, delim = ''): string => {
+  return Job.filter(x => (1 << x.id) & flags)
     .map(x => x.jas)
-    .join(sep);
+    .join(delim);
 };
+
+const jobNames = (cond: Condition): string => {
+  return JobNames(cond.job_flags, sep);
+};
+
 const typeNames = (cond: Condition): string => {
   const tmp: string[] = [];
   cond.types.forEach(x => {
