@@ -4,11 +4,7 @@ import { normalize, slots, skills } from './constants';
 
 type Filter = (item: Item) => boolean;
 
-export function Apply(cond: Condition, item: Item[]): Item[] {
-  return item.filter(FilterSet(cond));
-}
-
-const FilterSet = (cond: Condition): Filter =>
+export const Build = (cond: Condition): Filter =>
   every(
     [
       cond.text
@@ -23,9 +19,6 @@ const FilterSet = (cond: Condition): Filter =>
 
 const every = (fs: Filter[]): Filter => {
   return (item: Item): boolean => fs.every(accept => accept(item));
-};
-const some = (fs: Filter[]): Filter => {
-  return (item: Item): boolean => fs.some(accept => accept(item));
 };
 
 type extractor<T> = (item: Item) => T | null;

@@ -3,20 +3,44 @@ import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
 import { createBrowserHistory } from 'history';
 
-import { Reducer, SetText, SetJob, SetSlot, SetSkill, SetMinLevel, Reset } from './condition';
-import { jobs, slots, skills, items, normalize, Encode, Decode } from './constants';
+import {
+  Reducer,
+  SetText,
+  SetJob,
+  SetSlot,
+  SetSkill,
+  SetMinLevel,
+  Reset,
+} from './condition';
+import {
+  jobs,
+  slots,
+  skills,
+  items,
+  normalize,
+  Encode,
+  Decode,
+} from './constants';
 import { Condition } from './condition';
 import { Item } from '../utils';
 import * as filter from './query';
 import * as column from './column';
 
-const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>[] => [
+const columns = (
+  extra: TableColumn<Item>[],
+  words: string[]
+): TableColumn<Item>[] => [
   {
     name: 'アイテム',
     selector: row => row.name,
     cell: row => (
       <a href={searchLink(row.name)}>
-        <Highlighter searchWords={words} textToHighlight={row.name} autoEscape={true} caseSensitive={false} />
+        <Highlighter
+          searchWords={words}
+          textToHighlight={row.name}
+          autoEscape={true}
+          caseSensitive={false}
+        />
       </a>
     ),
     sortable: true,
@@ -26,11 +50,17 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
     name: '説明',
     selector: row => row.description,
     cell: row => (
-      <Highlighter searchWords={words} textToHighlight={row.description} autoEscape={true} caseSensitive={false} />
+      <Highlighter
+        searchWords={words}
+        textToHighlight={row.description}
+        autoEscape={true}
+        caseSensitive={false}
+      />
     ),
     sortable: true,
     width: '28em',
-    format: row => row.description.split('\n').map(line => <div key={line}>{line}</div>),
+    format: row =>
+      row.description.split('\n').map(line => <div key={line}>{line}</div>),
   },
   ...extra,
   {
@@ -78,7 +108,7 @@ const App = () => {
     .map(normalize);
   const props = column.PropNames(words);
   const extra = props.map(column.Extra);
-  const data = filter.Apply(cond, items).sort(column.Sorter(props));
+  const data = items.filter(filter.Build(cond)).sort(column.Sorter(props));
 
   return (
     <div>
@@ -144,7 +174,9 @@ const App = () => {
             </button>
           ))}
           <button
-            onClick={() => dispatchCondition(SetMinLevel(cond.minLevel === 119 ? 0 : 119))}
+            onClick={() =>
+              dispatchCondition(SetMinLevel(cond.minLevel === 119 ? 0 : 119))
+            }
             style={{
               background: cond.minLevel === 119 ? 'mistyrose' : 0,
               border: 0,
@@ -153,12 +185,20 @@ const App = () => {
             IL119
           </button>
           <button
-            onClick={() => dispatchCondition(SetMinLevel(cond.minLevel === 99 ? 0 : 99))}
-            style={{ background: cond.minLevel === 99 ? 'mistyrose' : 0, border: 0 }}
+            onClick={() =>
+              dispatchCondition(SetMinLevel(cond.minLevel === 99 ? 0 : 99))
+            }
+            style={{
+              background: cond.minLevel === 99 ? 'mistyrose' : 0,
+              border: 0,
+            }}
           >
             Lv99
           </button>
-          <button onClick={() => dispatchCondition(Reset)} style={{ background: 0, border: 0 }}>
+          <button
+            onClick={() => dispatchCondition(Reset)}
+            style={{ background: 0, border: 0 }}
+          >
             リセット
           </button>
         </div>
