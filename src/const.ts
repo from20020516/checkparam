@@ -48,16 +48,6 @@ export const SlotName = {
   [SlotID.Back]: '背',
 };
 
-export const shield = '盾';
-export const miscWeapon = {
-  Throwing: '投てき',
-  Ammo: '矢弾',
-  Grip: 'グリップ',
-  Wind: '管楽器',
-  Stringed: '弦楽器',
-  Handbell: '風水鈴',
-} as const;
-
 // 0:なし と 23:モンストロス を除外
 export const jobs = constants.jobs.slice(1, -1);
 
@@ -68,6 +58,16 @@ export const weapon = constants.skills.filter(
     skill.category === 'Combat' &&
     !['回避', '受け流し', 'ガード', '盾', '投てき'].includes(skill.ja)
 );
+
+export const shield = '盾';
+export const miscWeapon = {
+  Throwing: '投てき',
+  Ammo: '矢弾',
+  Grip: 'グリップ',
+  Wind: '管楽器',
+  Stringed: '弦楽器',
+  Handbell: '風水鈴',
+} as const;
 
 const data: Item[] = require('./items.json');
 
