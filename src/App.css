@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+button {
+    cursor: pointer;
+    border: 0;
+    background:0;
+}
+
+button.on {
+    background:mistyrose;
+}

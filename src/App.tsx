@@ -2,6 +2,7 @@ import { useReducer, useEffect } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
 import { createBrowserHistory } from 'history';
+import './App.css';
 
 import {
   Reducer,
@@ -135,10 +136,7 @@ const App = () => {
             <button
               key={job.jas}
               onClick={() => dispatchCondition(SetJob(job.id))}
-              style={{
-                background: cond.job_flags & (1 << job.id) && 'mistyrose',
-                border: 0,
-              }}
+              className={cond.job_flags & (1 << job.id) ? 'on' : 'off'}
             >
               {job.jas}
             </button>
@@ -150,10 +148,7 @@ const App = () => {
             <button
               key={name}
               onClick={() => dispatchCondition(SetType(name))}
-              style={{
-                background: cond.types.has(name) ? 'mistyrose' : 0,
-                border: 0,
-              }}
+              className={cond.types.has(name) ? 'on' : 'off'}
             >
               {name}
             </button>
@@ -165,10 +160,7 @@ const App = () => {
             <button
               key={slot}
               onClick={() => dispatchCondition(SetType(slot))}
-              style={{
-                background: cond.types.has(slot) ? 'mistyrose' : 0,
-                border: 0,
-              }}
+              className={cond.types.has(slot) ? 'on' : 'off'}
             >
               {slot}
             </button>
@@ -177,10 +169,7 @@ const App = () => {
             onClick={() =>
               dispatchCondition(SetMinLevel(cond.minLevel === 119 ? 0 : 119))
             }
-            style={{
-              background: cond.minLevel === 119 ? 'mistyrose' : 0,
-              border: 0,
-            }}
+            className={cond.minLevel === 119 ? 'on' : 'off'}
           >
             IL119
           </button>
@@ -188,19 +177,11 @@ const App = () => {
             onClick={() =>
               dispatchCondition(SetMinLevel(cond.minLevel === 99 ? 0 : 99))
             }
-            style={{
-              background: cond.minLevel === 99 ? 'mistyrose' : 0,
-              border: 0,
-            }}
+            className={cond.minLevel === 99 ? 'on' : 'off'}
           >
             Lv99
           </button>
-          <button
-            onClick={() => dispatchCondition(Reset)}
-            style={{ background: 0, border: 0 }}
-          >
-            リセット
-          </button>
+          <button onClick={() => dispatchCondition(Reset)}>リセット</button>
         </div>
       </div>
       <DataTable
