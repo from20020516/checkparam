@@ -57,7 +57,7 @@ const skills = constants.skills.filter(
 );
 
 const weapon = skills
-  .filter(skill => !['管楽器', '弦楽器', '風水鈴'].includes(skill.ja))
+  .filter(skill => !['盾', '管楽器', '弦楽器', '風水鈴'].includes(skill.ja))
   .map(x => x.ja);
 
 const miscWeapon = {
