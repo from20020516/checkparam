@@ -2,7 +2,6 @@ import { useReducer, useEffect } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
 import { createBrowserHistory } from 'history';
-import './App.css';
 
 import {
   Reducer,
@@ -26,6 +25,7 @@ import { Condition } from './condition';
 import { Item } from './types';
 import * as filter from './filter';
 import * as column from './column';
+import './App.css';
 
 const columns = (
   extra: TableColumn<Item>[],
