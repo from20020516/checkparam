@@ -8,17 +8,17 @@ export type Condition = {
   types: Set<string>;
 };
 
-export type Action = (cond: Condition) => Condition;
+type action = (cond: Condition) => Condition;
 
-export function Reducer(cond: Condition, action: Action): Condition {
-  return action(cond);
+export function Reducer(cond: Condition, act: action): Condition {
+  return act(cond);
 }
 
-export function SetText(s: string): Action {
+export function SetText(s: string): action {
   return (cond: Condition): Condition => ({ ...cond, text: s });
 }
 
-export function SetJob(bits: number): Action {
+export function SetJob(bits: number): action {
   return (cond: Condition): Condition => ({
     ...cond,
     job_flags: cond.job_flags ^ (1 << bits) /** 指定ジョブのbitを反転させる */,
@@ -31,21 +31,21 @@ const toggle = <T>(xs: Set<T>, x: T): Set<T> => {
   return ret;
 };
 
-export function SetType(name: string): Action {
+export function SetType(name: string): action {
   return (cond: Condition): Condition => ({
     ...cond,
     types: toggle(cond.types, name),
   });
 }
 
-export function SetMinLevel(level: number): Action {
+export function SetMinLevel(level: number): action {
   return (cond: Condition): Condition => ({
     ...cond,
     minLevel: level,
   });
 }
 
-export const Reset: Action = () => Initial();
+export const Reset: action = () => Initial();
 
 export function Initial(): Condition {
   return {
