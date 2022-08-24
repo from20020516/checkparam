@@ -147,7 +147,7 @@ const App = () => {
           ))}
         </div>
         <div>
-          スキル：
+          武器：
           {Weapon.map(name => (
             <button
               key={name}
@@ -162,7 +162,7 @@ const App = () => {
           ))}
         </div>
         <div>
-          装備枠：
+          防具：
           {Armor.map(slot => (
             <button
               key={slot}
