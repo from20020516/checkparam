@@ -53,11 +53,11 @@ const skills = constants.skills.filter(
   skill =>
     (skill.category === SkillCategory.Combat &&
       !['回避', '受け流し', 'ガード', '投てき'].includes(skill.ja)) ||
-    ['管楽器', '弦楽器', '風水鈴'].includes(skill.ja)
+    ['管楽器', '弦楽器'].includes(skill.ja)
 );
 
 const weapon = skills
-  .filter(skill => !['盾', '管楽器', '弦楽器', '風水鈴'].includes(skill.ja))
+  .filter(skill => !['盾', '管楽器', '弦楽器'].includes(skill.ja))
   .map(x => x.ja);
 
 const miscWeapon = {
@@ -66,7 +66,6 @@ const miscWeapon = {
   Grip: 'グリップ',
   Wind: '管楽器',
   Stringed: '弦楽器',
-  Handbell: '風水鈴',
 } as const;
 const shield = '盾';
 
