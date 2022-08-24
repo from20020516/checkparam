@@ -1,4 +1,4 @@
-import { Item, RawItem, SkillCategory } from './types';
+import { Item, RawItem, Category, SkillCategory } from './types';
 import { Condition } from './condition';
 
 const constants: {
@@ -51,7 +51,7 @@ export const Job = constants.jobs.slice(1, -1);
 
 const skills = constants.skills.filter(
   skill =>
-    (skill.category === 'Combat' &&
+    (skill.category === SkillCategory.Combat &&
       !['回避', '受け流し', 'ガード', '投てき'].includes(skill.ja)) ||
     ['管楽器', '弦楽器', '風水鈴'].includes(skill.ja)
 );
@@ -99,7 +99,7 @@ export const ItemType = (item: RawItem): string => {
   if (item.slots) {
     switch (item.slots) {
       case SlotID.Sub:
-        return item.category === 'Weapon' ? miscWeapon.Grip : shield;
+        return item.category === Category.Weapon ? miscWeapon.Grip : shield;
       case SlotID.Range:
         return miscWeapon.Throwing;
       case SlotID.Ammo:
@@ -112,15 +112,21 @@ export const ItemType = (item: RawItem): string => {
 };
 
 const sep = ' ';
+const AllJobs = parseInt('11111111111111111111110', 2);
 
-export const JobNames = (flags: number, delim = ''): string => {
+export const JobNames = (flags: number): string => {
+  if (flags === AllJobs) {
+    return 'All Jobs';
+  }
   return Job.filter(x => (1 << x.id) & flags)
     .map(x => x.jas)
-    .join(delim);
+    .join('');
 };
 
 const jobNames = (cond: Condition): string => {
-  return JobNames(cond.job_flags, sep);
+  return Job.filter(x => (1 << x.id) & cond.job_flags)
+    .map(x => x.jas)
+    .join(sep);
 };
 
 const typeNames = (cond: Condition): string => {

@@ -64,5 +64,5 @@ export interface Item {
   item_level: number;
   jobs: number;
   type: string;
-  category: string;
+  category: Category;
 }

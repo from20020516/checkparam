@@ -59,8 +59,6 @@ const columns = (
     ),
     sortable: true,
     width: '28em',
-    format: row =>
-      row.description.split('\n').map(line => <div key={line}>{line}</div>),
   },
   ...extra,
   {
