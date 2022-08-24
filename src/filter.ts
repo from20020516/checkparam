@@ -113,16 +113,9 @@ const extractType: extractor<string> = (item: Item): string | null => {
   return null;
 };
 
-const types = (cond: Condition): string[] =>
-  [
-    slots.filter(x => (1 << x.id) & cond.slot_flags).map(x => x.ja),
-    skills.filter(x => cond.skill.has(x.id)).map(x => x.ja),
-  ].flatMap(x => x);
-
 const typeFilter = (cond: Condition): Filter => {
-  const ts = types(cond);
-  return ts.length > 0
-    ? extractAndCheck(extractType, t => ts.includes(t))
+  return cond.types.size > 0
+    ? extractAndCheck(extractType, t => cond.types.has(t))
     : acceptAlways;
 };
 

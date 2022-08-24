@@ -7,8 +7,7 @@ import {
   Reducer,
   SetText,
   SetJob,
-  SetSlot,
-  SetSkill,
+  SetType,
   SetMinLevel,
   Reset,
 } from './condition';
@@ -150,9 +149,9 @@ const App = () => {
           {skills.map(skill => (
             <button
               key={skill.ja}
-              onClick={() => dispatchCondition(SetSkill(skill.id))}
+              onClick={() => dispatchCondition(SetType(skill.ja))}
               style={{
-                background: cond.skill.has(skill.id) ? 'mistyrose' : 0,
+                background: cond.types.has(skill.ja) ? 'mistyrose' : 0,
                 border: 0,
               }}
             >
@@ -165,9 +164,9 @@ const App = () => {
           {slots.map(slot => (
             <button
               key={slot.ja}
-              onClick={() => dispatchCondition(SetSlot(slot.id))}
+              onClick={() => dispatchCondition(SetType(slot.ja))}
               style={{
-                background: cond.slot_flags & (1 << slot.id) && 'mistyrose',
+                background: cond.types.has(slot.ja) ? 'mistyrose' : 0,
                 border: 0,
               }}
             >
