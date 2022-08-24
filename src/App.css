@@ -41,8 +41,10 @@ button {
     cursor: pointer;
     border: 0;
     background:0;
+    color: gray;
 }
 
 button.on {
     background:mistyrose;
+    color: black;
 }
