@@ -80,7 +80,7 @@ const typeNames = (cond: Condition, sep = ' '): string => {
   return tmp.join(sep);
 };
 
-export const encode = (cond: Condition): URLSearchParams => {
+const encode = (cond: Condition): URLSearchParams => {
   const p: { [index: string]: string } = {
     t: cond.text,
     job: jobNames(cond),
