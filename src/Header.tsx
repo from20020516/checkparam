@@ -4,14 +4,14 @@ import { Condition, jobNames } from './condition';
 
 export const siteName = 'FFXI アイテム検索';
 
+const getTitle = (cond: Condition) =>
+  `${siteName} ${jobNames(cond, '')}+${[...cond.types].join('')}`;
+
 const Header = (props: { cond: Condition }) => {
   const [title, setTitle] = useState('');
 
-  const handleTitle = (cond: Condition) =>
-    `${siteName} ${jobNames(cond, '')}+${[...cond.types].join('')}`;
-
   useEffect(() => {
-    setTitle(handleTitle(props.cond));
+    setTitle(getTitle(props.cond));
   }, [props.cond]);
 
   return (
