@@ -66,14 +66,13 @@ export const LoadParam = (): Condition => {
   return decode(new URLSearchParams(document.location.search));
 };
 
-const sep = ' ';
-const jobNames = (cond: Condition): string => {
+export const jobNames = (cond: Condition, sep = ' '): string => {
   return Job.filter(x => (1 << x.id) & cond.job_flags)
     .map(x => x.jas)
     .join(sep);
 };
 
-const typeNames = (cond: Condition): string => {
+const typeNames = (cond: Condition, sep = ' '): string => {
   const tmp: string[] = [];
   cond.types.forEach(x => {
     tmp.push(x);
@@ -81,7 +80,7 @@ const typeNames = (cond: Condition): string => {
   return tmp.join(sep);
 };
 
-const encode = (cond: Condition): URLSearchParams => {
+export const encode = (cond: Condition): URLSearchParams => {
   const p: { [index: string]: string } = {
     t: cond.text,
     job: jobNames(cond),
@@ -97,7 +96,7 @@ const encode = (cond: Condition): URLSearchParams => {
   return ret;
 };
 
-const decodeFlags = (s: string, table: Map<string, number>): number => {
+const decodeFlags = (s: string, table: Map<string, number>, sep = ' '): number => {
   return s
     .split(sep)
     .map(x => table.get(x))
@@ -105,7 +104,7 @@ const decodeFlags = (s: string, table: Map<string, number>): number => {
     .reduce((acc, id) => acc | (1 << id), 0);
 };
 
-const decodeSet = (s: string): Set<string> => {
+const decodeSet = (s: string, sep = ' '): Set<string> => {
   return s
     .split(sep)
     .filter(t => t !== '')
