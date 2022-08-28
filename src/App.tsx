@@ -1,19 +1,38 @@
-import { useReducer } from 'react';
-import { Item } from '../utils';
+import { useReducer, useEffect } from 'react';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
-import { Reducer, SetText, SetJob, SetSlot, SetSkill, SetMinLevel, Reset, Initial } from './condition';
-import { jobs, slots, skills, items, normalize } from './constants';
-import * as filter from './query';
-import * as column from './column';
 
-const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>[] => [
+import {
+  Reducer,
+  SetText,
+  SetJob,
+  SetType,
+  SetMinLevel,
+  Reset,
+  StoreParam,
+  LoadParam,
+} from './condition';
+import { Job, Armor, Weapon, Items, Normalize, JobNames } from './const';
+import { Item } from './types';
+import * as filter from './filter';
+import * as column from './column';
+import './App.css';
+
+const columns = (
+  extra: TableColumn<Item>[],
+  words: string[]
+): TableColumn<Item>[] => [
   {
     name: 'アイテム',
     selector: row => row.name,
     cell: row => (
       <a href={searchLink(row.name)}>
-        <Highlighter searchWords={words} textToHighlight={row.name} autoEscape={true} caseSensitive={false} />
+        <Highlighter
+          searchWords={words}
+          textToHighlight={row.name}
+          autoEscape={true}
+          caseSensitive={false}
+        />
       </a>
     ),
     sortable: true,
@@ -23,11 +42,15 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
     name: '説明',
     selector: row => row.description,
     cell: row => (
-      <Highlighter searchWords={words} textToHighlight={row.description} autoEscape={true} caseSensitive={false} />
+      <Highlighter
+        searchWords={words}
+        textToHighlight={row.description}
+        autoEscape={true}
+        caseSensitive={false}
+      />
     ),
     sortable: true,
     width: '28em',
-    format: row => row.description.split('\n').map(line => <div key={line}>{line}</div>),
   },
   ...extra,
   {
@@ -38,7 +61,7 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
   },
   {
     name: 'ジョブ',
-    selector: row => row.jobs,
+    selector: row => JobNames(row.jobs),
     sortable: true,
     width: '28em',
   },
@@ -57,15 +80,19 @@ const columns = (extra: TableColumn<Item>[], words: string[]): TableColumn<Item>
 ];
 
 const App = () => {
-  const [cond, dispatchCondition] = useReducer(Reducer, Initial());
+  const [cond, dispatchCondition] = useReducer(Reducer, LoadParam());
+
+  useEffect(() => {
+    StoreParam(cond);
+  }, [cond]);
 
   const words = cond.text
     .split(/\s/)
     .filter(t => t !== '')
-    .map(normalize);
+    .map(Normalize);
   const props = column.PropNames(words);
   const extra = props.map(column.Extra);
-  const data = filter.Apply(cond, items).sort(column.Sorter(props));
+  const data = Items.filter(filter.Build(cond)).sort(column.Sorter(props));
 
   return (
     <div>
@@ -88,66 +115,56 @@ const App = () => {
         </div>
         <div>
           ジョブ：
-          {jobs.map(job => (
+          {Job.map(job => (
             <button
               key={job.jas}
               onClick={() => dispatchCondition(SetJob(job.id))}
-              style={{
-                background: cond.job_flags & (1 << job.id) && 'mistyrose',
-                border: 0,
-              }}
+              className={cond.job_flags & (1 << job.id) ? 'on' : 'off'}
             >
               {job.jas}
             </button>
           ))}
         </div>
         <div>
-          スキル：
-          {skills.map(skill => (
+          武器：
+          {Weapon.map(name => (
             <button
-              key={skill.ja}
-              onClick={() => dispatchCondition(SetSkill(skill.id))}
-              style={{
-                background: cond.skill.has(skill.id) ? 'mistyrose' : 0,
-                border: 0,
-              }}
+              key={name}
+              onClick={() => dispatchCondition(SetType(name))}
+              className={cond.types.has(name) ? 'on' : 'off'}
             >
-              {skill.ja}
+              {name}
             </button>
           ))}
         </div>
         <div>
-          装備枠：
-          {slots.map(slot => (
+          防具：
+          {Armor.map(slot => (
             <button
-              key={slot.ja}
-              onClick={() => dispatchCondition(SetSlot(slot.id))}
-              style={{
-                background: cond.slot_flags & (1 << slot.id) && 'mistyrose',
-                border: 0,
-              }}
+              key={slot}
+              onClick={() => dispatchCondition(SetType(slot))}
+              className={cond.types.has(slot) ? 'on' : 'off'}
             >
-              {slot.ja}
+              {slot}
             </button>
           ))}
           <button
-            onClick={() => dispatchCondition(SetMinLevel(cond.minLevel === 119 ? 0 : 119))}
-            style={{
-              background: cond.minLevel === 119 ? 'mistyrose' : 0,
-              border: 0,
-            }}
+            onClick={() =>
+              dispatchCondition(SetMinLevel(cond.minLevel === 119 ? 0 : 119))
+            }
+            className={cond.minLevel === 119 ? 'on' : 'off'}
           >
             IL119
           </button>
           <button
-            onClick={() => dispatchCondition(SetMinLevel(cond.minLevel === 99 ? 0 : 99))}
-            style={{ background: cond.minLevel === 99 ? 'mistyrose' : 0, border: 0 }}
+            onClick={() =>
+              dispatchCondition(SetMinLevel(cond.minLevel === 99 ? 0 : 99))
+            }
+            className={cond.minLevel === 99 ? 'on' : 'off'}
           >
             Lv99
           </button>
-          <button onClick={() => dispatchCondition(Reset)} style={{ background: 0, border: 0 }}>
-            リセット
-          </button>
+          <button onClick={() => dispatchCondition(Reset)}>リセット</button>
         </div>
       </div>
       <DataTable

@@ -1,6 +1,6 @@
-import { Item } from '../utils';
+import { Item } from './types';
 import { TableColumn } from 'react-data-table-component';
-import { propValue } from './query';
+import { propValue } from './filter';
 
 export function Extra(name: string): TableColumn<Item> {
   const extract = propValue(name);
