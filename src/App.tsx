@@ -16,6 +16,8 @@ import { Job, Armor, Weapon, Items, Normalize, JobNames } from './const';
 import { Item } from './types';
 import * as filter from './filter';
 import * as column from './column';
+
+import Header, { siteName } from './Header';
 import './App.css';
 
 const columns = (
@@ -96,6 +98,7 @@ const App = () => {
 
   return (
     <div>
+      <Header cond={cond} />
       <div
         style={{
           paddingLeft: 15,
@@ -104,7 +107,7 @@ const App = () => {
         }}
       >
         <div>
-          <h1>FFXI アイテム検索</h1>
+          <h1>{siteName}</h1>
           <input
             type="text"
             value={cond.text}
