@@ -3,6 +3,7 @@ import {
   StackProps,
   RemovalPolicy,
   aws_codebuild as codebuild,
+  aws_iam as iam,
   aws_secretsmanager as sm,
 } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
@@ -30,6 +31,16 @@ export class CheckparamStack extends Stack {
         /** @see https://docs.aws.amazon.com/amplify/latest/userguide/setting-up-GitHub-access.html */
         oauthToken: secret.secretValueFromJson('GITHUB_OAUTH_TOKEN'),
       }),
+      environmentVariables: {
+        AMPLIFY_NEXTJS_EXPERIMENTAL_TRACE: 'true'
+      },
+      role: new iam.Role(this, 'AmplifyAppServiceRole', {
+        roleName: 'AmplifyAppServiceRole',
+        assumedBy: new iam.ServicePrincipal('amplify.amazonaws.com'),
+        managedPolicies: [
+          iam.ManagedPolicy.fromAwsManagedPolicyName('AdministratorAccess')
+        ]
+      }),
       autoBranchCreation: {
         autoBuild: true,
         pullRequestPreview: true,
@@ -56,7 +67,7 @@ export class CheckparamStack extends Stack {
             }
           },
           artifacts: {
-            baseDirectory: 'build',
+            baseDirectory: '.next',
             files: [
               '**/*'
             ]

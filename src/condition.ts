@@ -1,5 +1,6 @@
 import { Job } from './const';
 import { createBrowserHistory } from 'history';
+import { ParsedUrlQuery } from 'querystring';
 
 export type Condition = {
   job_flags: number;
@@ -62,8 +63,8 @@ export const StoreParam = (cond: Condition): void => {
   });
 };
 
-export const LoadParam = (): Condition => {
-  return decode(new URLSearchParams(document.location.search));
+export const LoadParam = (query: ParsedUrlQuery): Condition => {
+  return decode(query as any);
 };
 
 export const jobNames = (cond: Condition, sep = ' '): string => {
@@ -113,11 +114,12 @@ const decodeSet = (s: string, sep = ' '): Set<string> => {
 
 const jobID = Job.reduce((acc, x) => acc.set(x.jas, x.id), new Map());
 
-const decode = (p: URLSearchParams): Condition => {
+const decode = (p: ParsedUrlQuery): Condition => {
+  const { t, job, minLevel, type } = p
   return {
-    text: p.get('t') ?? '',
-    job_flags: decodeFlags(p.get('job') ?? '', jobID),
-    minLevel: Number(p.get('minLevel')),
-    types: decodeSet(p.get('type') ?? ''),
+    text: String(t ?? ''),
+    job_flags: decodeFlags(String(job ?? ''), jobID),
+    minLevel: Number(minLevel ?? 0),
+    types: decodeSet(String(type ?? ''))
   };
 };

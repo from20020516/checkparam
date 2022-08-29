@@ -1,4 +1,5 @@
 import { useReducer, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import DataTable, { TableColumn } from 'react-data-table-component';
 import Highlighter from 'react-highlight-words';
 
@@ -18,7 +19,7 @@ import * as filter from './filter';
 import * as column from './column';
 
 import Header, { siteName } from './Header';
-import './App.css';
+import Pagination from './Pagination';
 
 const columns = (
   extra: TableColumn<Item>[],
@@ -82,7 +83,11 @@ const columns = (
 ];
 
 const App = () => {
-  const [cond, dispatchCondition] = useReducer(Reducer, LoadParam());
+  const router = useRouter();
+  const [cond, dispatchCondition] = useReducer(
+    Reducer,
+    LoadParam(router.query)
+  );
 
   useEffect(() => {
     StoreParam(cond);
@@ -175,8 +180,8 @@ const App = () => {
         data={data}
         fixedHeader={true}
         pagination={true}
+        paginationComponent={Pagination}
         paginationPerPage={30}
-        paginationRowsPerPageOptions={[10, 30, 50, 100, 200]}
         style={{ whiteSpace: 'pre-wrap' }}
       />
     </div>

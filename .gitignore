@@ -30,3 +30,8 @@ yarn-error.log*
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# Next.js
+.next/
+out/
+!next.config.js
